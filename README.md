@@ -14,6 +14,7 @@ Quickly identifies memory leaks in the JVM's heap.
 ## Detect Memory Leaks
 These charts graph the "#bytes" column from [JAVA_HOME/bin/jmap -histo <myPid>](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr014.html#BABJIIHH)
 Memory leaks show up as lines that
+
 1. Have many dots
 2. Show an upward trend in byte count.
 
