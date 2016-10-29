@@ -20,7 +20,7 @@
 
 ## Configure and Run
 
-6. Using JAVA_HOME/bin/jps or similar, find the pid of the Java process in which you want to detect memory leaks, assuming heapSpank and JVM to be monitored are on the same machine.  To monitor a remote JVM, see the section below on Headless heapSpank.
+6. Using JAVA_HOME/bin/jps or similar, find the pid of the Java process you want to monitor for leaks, assuming heapSpank and JVM to be monitored are on the same machine.  To monitor a remote JVM, see the section below on Headless heapSpank.
 7. Find the topmost node in JMeter -- named "heapSpank".  Set the HEAPSPANK_PID to the pid from the above step.  [This screenshot](https://cloud.githubusercontent.com/assets/175773/19832211/f1ec898e-9de2-11e6-8be4-ce688b7862e5.png) shows how.
 
 8. Make sure load (preferably steady state load) is being applied to the system you are testing for leaks.  It helps to run at steady for a few minutes before starting heapSpank.
