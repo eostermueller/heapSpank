@@ -13,6 +13,7 @@ Quickly identifies memory leaks in the JVM's heap.
 6. Find the topmost node in JMeter -- named "heapSpank".  Set the HEAPSPANK_PID to the pid from the above step.
 7. Select Run / Start JMeter menu item.
 8. Drill down / select "leakySpank_Graph"
+9. Graph will remain blank for 60-90 seconds, and will refresh every 60-90 seconds (based on default parameters).
 
 ## Detect Memory Leaks
 heapSpank graphs the "#bytes" column from [JAVA_HOME/bin/jmap -histo <myPid>](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr014.html#BABJIIHH).
