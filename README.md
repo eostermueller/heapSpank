@@ -1,5 +1,6 @@
 # heapSpank
 Quickly identifies memory leaks in the JVM's heap.
+
 ![leak-or-no-leak](https://cloud.githubusercontent.com/assets/175773/19831182/64f10ed8-9dc9-11e6-8775-07dc6cbfc276.png)
 
 
