@@ -72,6 +72,7 @@ public class LeakySpankSampler extends AbstractJavaSamplerClient {
 				result.setResponseData(resultsForWindow.renderBytes(LEAKY_SPANKY), "UTF-8");
 			}
 
+			result.setDataType(SampleResult.TEXT);
 			result.setResponseCodeOK();
 			result.sampleEnd();// time for all transformations
 		} catch (Exception e) {

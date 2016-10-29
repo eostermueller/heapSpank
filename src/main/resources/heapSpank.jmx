@@ -9,7 +9,7 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="HEAPSPANK_PID" elementType="Argument">
             <stringProp name="Argument.name">HEAPSPANK_PID</stringProp>
-            <stringProp name="Argument.value">27179</stringProp>
+            <stringProp name="Argument.value">30167</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -32,76 +32,31 @@
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
-        <kg.apc.jmeter.vizualizers.CorrectedResultCollector guiclass="kg.apc.jmeter.vizualizers.PageDataExtractorOverTimeGui" testclass="kg.apc.jmeter.vizualizers.CorrectedResultCollector" testname="leakySpank_Graph" enabled="true">
-          <boolProp name="ResultCollector.error_logging">false</boolProp>
-          <objProp>
-            <name>saveConfig</name>
-            <value class="SampleSaveConfiguration">
-              <time>true</time>
-              <latency>true</latency>
-              <timestamp>true</timestamp>
-              <success>true</success>
-              <label>true</label>
-              <code>true</code>
-              <message>true</message>
-              <threadName>true</threadName>
-              <dataType>true</dataType>
-              <encoding>false</encoding>
-              <assertions>true</assertions>
-              <subresults>true</subresults>
-              <responseData>true</responseData>
-              <samplerData>false</samplerData>
-              <xml>true</xml>
-              <fieldNames>false</fieldNames>
-              <responseHeaders>false</responseHeaders>
-              <requestHeaders>false</requestHeaders>
-              <responseDataOnError>false</responseDataOnError>
-              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
-              <assertionsResultsToSave>0</assertionsResultsToSave>
-              <bytes>true</bytes>
-            </value>
-          </objProp>
-          <stringProp name="filename"></stringProp>
-          <longProp name="interval_grouping">1000</longProp>
-          <boolProp name="graph_aggregated">false</boolProp>
-          <stringProp name="include_sample_labels"></stringProp>
-          <stringProp name="exclude_sample_labels">server_SRV3_TOTAL_version</stringProp>
-          <collectionProp name="regexps">
-            <collectionProp name="2078420647">
-              <stringProp name="1440585344">(ls_.*)=</stringProp>
-              <stringProp name="2036578496">ls_.*=(.*)&lt;BR&gt;</stringProp>
-              <stringProp name="1237">false</stringProp>
-              <stringProp name="1231">true</stringProp>
-            </collectionProp>
-          </collectionProp>
-          <stringProp name="start_offset"></stringProp>
-          <stringProp name="end_offset"></stringProp>
-          <boolProp name="include_checkbox_state">false</boolProp>
-          <boolProp name="exclude_checkbox_state">false</boolProp>
-          <stringProp name="TestPlan.comments">Use ${JTL_FOLDER}/${FILE_gcnew} for Filename to capture output when running JMeter headlessly</stringProp>
-        </kg.apc.jmeter.vizualizers.CorrectedResultCollector>
-        <hashTree/>
         <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="leakySpank_Configuration" enabled="true">
           <collectionProp name="Arguments.arguments">
             <elementProp name="PID" elementType="Argument">
               <stringProp name="Argument.name">PID</stringProp>
               <stringProp name="Argument.value">${HEAPSPANK_PID}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
+              <stringProp name="Argument.desc">process id of JVM to detect leaks in.  A value of {$HEAPSPANK_PID} enables leakySpank and garbageSpank to monitor same process</stringProp>
             </elementProp>
             <elementProp name="INTERVAL_IN_SECONDS" elementType="Argument">
               <stringProp name="Argument.name">INTERVAL_IN_SECONDS</stringProp>
               <stringProp name="Argument.value">15</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
+              <stringProp name="Argument.desc">interval in seconds between invocations of jmap -histo</stringProp>
             </elementProp>
             <elementProp name="INTERVAL_COUNT_PER_WINDOW" elementType="Argument">
               <stringProp name="Argument.name">INTERVAL_COUNT_PER_WINDOW</stringProp>
               <stringProp name="Argument.value">4</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
+              <stringProp name="Argument.desc">number jmap -histo executions in an evaluation window.  Larger values paint screen less frequently but raise confidence in results.</stringProp>
             </elementProp>
             <elementProp name="TOP_N_SUSPECTS_PER_WINDOW" elementType="Argument">
               <stringProp name="Argument.name">TOP_N_SUSPECTS_PER_WINDOW</stringProp>
               <stringProp name="Argument.value">2</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
+              <stringProp name="Argument.desc">Number of class names identified as suspects in each window.  Currently hit by an off-by-one bug.  If you specify 2, you get 3 per window.</stringProp>
             </elementProp>
           </collectionProp>
         </Arguments>
@@ -176,6 +131,55 @@
           </ConstantTimer>
           <hashTree/>
         </hashTree>
+        <kg.apc.jmeter.vizualizers.CorrectedResultCollector guiclass="kg.apc.jmeter.vizualizers.PageDataExtractorOverTimeGui" testclass="kg.apc.jmeter.vizualizers.CorrectedResultCollector" testname="leakySpank_Graph" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>true</responseData>
+              <samplerData>false</samplerData>
+              <xml>true</xml>
+              <fieldNames>false</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+            </value>
+          </objProp>
+          <stringProp name="filename">leakySpank.jtl</stringProp>
+          <longProp name="interval_grouping">1000</longProp>
+          <boolProp name="graph_aggregated">false</boolProp>
+          <stringProp name="include_sample_labels"></stringProp>
+          <stringProp name="exclude_sample_labels">server_SRV3_TOTAL_version</stringProp>
+          <collectionProp name="regexps">
+            <collectionProp name="2078420647">
+              <stringProp name="1440585344">(ls_.*)=</stringProp>
+              <stringProp name="2036578496">ls_.*=(.*)&lt;BR&gt;</stringProp>
+              <stringProp name="1237">false</stringProp>
+              <stringProp name="1231">true</stringProp>
+            </collectionProp>
+          </collectionProp>
+          <stringProp name="start_offset"></stringProp>
+          <stringProp name="end_offset"></stringProp>
+          <boolProp name="include_checkbox_state">false</boolProp>
+          <boolProp name="exclude_checkbox_state">false</boolProp>
+          <stringProp name="TestPlan.comments">Use ${JTL_FOLDER}/${FILE_gcnew} for Filename to capture output when running JMeter headlessly</stringProp>
+        </kg.apc.jmeter.vizualizers.CorrectedResultCollector>
+        <hashTree/>
       </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="jstat" enabled="false">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
