@@ -4,6 +4,7 @@
 * Classes with upward trending consumption are graphed.
 * Data provided by [JAVA_HOME/bin/jmap -histo <myPid>](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr014.html#BABJIIHH).
 * Graphing facility provided by [JMeterPlugins](http://jmeter-plugins.org).
+* Works on all platforms where HotSpot JDK is available....a JRE is not enough b/c it lacks jmap executable.
 
 ![leak-or-no-leak](https://cloud.githubusercontent.com/assets/175773/19831182/64f10ed8-9dc9-11e6-8775-07dc6cbfc276.png)
 
@@ -12,7 +13,7 @@
 1. Install [JMeter](http://jmeter.apache.org/) -- used to run/capture output from [JAVA_HOME/bin/jmap -histo <myPid>](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr014.html#BABJIIHH).
 2. Install [this](https://jmeter-plugins.org/wiki/PageDataExtractor/) JMeter Plugin.
 3. Copy [the heapSpank jar file](https://github.com/eostermueller/heapSpank/releases/download/v0.2/heapSpank-0.2.jar) to JMETER_HOME/lib/ext
-4. Make sure the jmap executable that comes with your JDK is in the system's PATH.
+4. Make sure the jmap executable that comes with your JDK is in the system's PATH.  Normally, this means that JAVA_HOME/bin is in your path.
 5. Save [this .jmx file](https://raw.githubusercontent.com/eostermueller/heapSpank/9aa541de4543e18689bea5a1d9fa256356ba11a7/src/main/resources/heapSpank.jmx) to your hard disk.  Start/restart JMeter.  Choose File / Open to open the .jmx.
 6. Using JAVA_HOME/bin/jps or similar, find the pid of the Java process in which you want to detect memory leaks.
 7. Find the topmost node in JMeter -- named "heapSpank".  Set the HEAPSPANK_PID to the pid from the above step.
