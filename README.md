@@ -13,7 +13,7 @@
 1. Install [JMeter](http://jmeter.apache.org/) -- used to run/capture output from [JAVA_HOME/bin/jmap -histo <myPid>](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr014.html#BABJIIHH).
 2. Install [this](https://jmeter-plugins.org/wiki/PageDataExtractor/) JMeter Plugin.
 3. Copy [the heapSpank jar file](https://github.com/eostermueller/heapSpank/releases/download/v0.2/heapSpank-0.2.jar) to JMETER_HOME/lib/ext
-4. The above plugin installs require JMeter restart.
+4. The above plugin installs require  a JMeter restart.
 4. Make sure the jmap executable that comes with your JDK is in the system's PATH.  Normally, this means that JAVA_HOME/bin is in your path.
 5. Using the "Save link as" feature in your browser, save this file to your hard disk: [heapSpank.jmx](https://raw.githubusercontent.com/eostermueller/heapSpank/9aa541de4543e18689bea5a1d9fa256356ba11a7/src/main/resources/heapSpank.jmx).
 7. Using the JMeter menu, choose File / Open to open heapSpank.jmx you saved above.
