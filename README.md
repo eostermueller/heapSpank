@@ -18,10 +18,10 @@
 6. Using JAVA_HOME/bin/jps or similar, find the pid of the Java process in which you want to detect memory leaks, assuming heapSpank and JVM to be monitored are on the same machine.  To monitor a remote JVM, see the section below on Headless heapSpank.
 7. Find the topmost node in JMeter -- named "heapSpank".  Set the HEAPSPANK_PID to the pid from the above step.  [This screenshot](https://cloud.githubusercontent.com/assets/175773/19832211/f1ec898e-9de2-11e6-8be4-ce688b7862e5.png) shows how.
 
-
-8. Select Run / Start JMeter menu item.
-9. Drill down / select "leakySpank_Graph"
-10. Graph will remain blank for 60-90 seconds, and will refresh every 60-90 seconds (based on default parameters).
+8. Make sure load (preferably steady state load) is being applied to the system you are testing for leaks.  It helps to run at steady for a few minutes before starting heapSpank.
+9. While load is still being applied from above step, start heapSpank: on the JMeter menu, select Run / Start.
+10. Drill down / select "leakySpank_Graph"
+11. Graph will remain blank for 60-90 seconds, and will refresh every 60-90 seconds (based on default parameters).
 
 ## Detect Memory Leaks
 heapSpank graphs the "#bytes" column from [JAVA_HOME/bin/jmap -histo <myPid>](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr014.html#BABJIIHH).
@@ -38,7 +38,7 @@ Here are the details:
 
 1. With heapSpank.jmx on a GUI machine:
  * As shown in the screenshot below, configure file name where heapSpank writes text results.  leakySpank.jtl is used in this example.
- * Configure the HEAPSPANK_PID with the PID of the JVM on the **headless machine**.
+ * Configure the HEAPSPANK_PID with the PID of the JVM to be monitored on the **headless machine**.
  * Transfer this newly edited heapSpank.jmx to the remote machine.
 2. Install heapSpank on headless OS, using the heapSpank.jmx edits from the above step.
 3. Start heapSpank headlessly, like this:  $JMETER_HOME/bin/jmeter.sh -n -t heapSpank.jmx
