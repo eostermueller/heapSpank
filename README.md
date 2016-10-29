@@ -16,7 +16,9 @@
 4. Make sure the jmap executable that comes with your JDK is in the system's PATH.  Normally, this means that JAVA_HOME/bin is in your path.
 5. Save [this .jmx file](https://raw.githubusercontent.com/eostermueller/heapSpank/9aa541de4543e18689bea5a1d9fa256356ba11a7/src/main/resources/heapSpank.jmx) to your hard disk.  Start/restart JMeter.  Choose File / Open to open the .jmx.
 6. Using JAVA_HOME/bin/jps or similar, find the pid of the Java process in which you want to detect memory leaks.
-7. Find the topmost node in JMeter -- named "heapSpank".  Set the HEAPSPANK_PID to the pid from the above step.
+7. Find the topmost node in JMeter -- named "heapSpank".  Set the HEAPSPANK_PID to the pid from the above step.  [This screenshot](https://cloud.githubusercontent.com/assets/175773/19832211/f1ec898e-9de2-11e6-8be4-ce688b7862e5.png) shows how.
+
+
 8. Select Run / Start JMeter menu item.
 9. Drill down / select "leakySpank_Graph"
 10. Graph will remain blank for 60-90 seconds, and will refresh every 60-90 seconds (based on default parameters).
