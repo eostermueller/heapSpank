@@ -22,4 +22,24 @@ To find your memory leak, look for lines that meet both of these criteria:
 1. Have many dots over time.
 2. Show an upward trend (in byte count).
 
+## Headless heapSpank
+To detect memory leaks in a JVM on a headless OS, just run heapSpank headlessly, writing data its data to a .jtl file.
+
+
+1. With heapSpank.jmx:
+ * As shown in the screenshot below, configure file name where heapSpank writes text results.  leakySpank.jtl is used in this example.
+ * Configure the HEAPSPANK_PID with the PID of the JVM on the headless machine.
+ * Transfer this newly edited heapSpank.jmx to the remote machine.
+2. Install heapSpank on headless OS, using the heapSpank.jmx edits from the above step.
+3. Start heapSpank headlessly, like this:  $JMETER_HOME/bin/jmeter.sh -n -t heapSpank.jmx
+  * ...confirm it is working by looking for new data added to "tail -f leakySpank.jtl".
+4. Let heapSpank run for 10-20 minutes.
+5. To view the results, transfer leakySpank.jtl back to a machine with a GUI where heapSpank is installed.
+6. Use the Browse button, below, to locate the newly created leakySpank.jtl file....and your results will render in the graph.
+
+
+
+![jtl_storage_annotated_01](https://cloud.githubusercontent.com/assets/175773/19831637/ab5b82da-9dd4-11e6-98eb-16310686439d.png)
+
+
 
