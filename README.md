@@ -20,7 +20,7 @@
 
 8. Make sure load (preferably steady state load) is being applied to the system you are testing for leaks.  It helps to run at steady for a few minutes before starting heapSpank.
 9. While load is still being applied from above step, start heapSpank: on the JMeter menu, select Run / Start.
-10. Drill down / select "leakySpank_Graph"
+10. In the leftmost pane of JMeter, drill down and select "leakySpank_Graph"
 11. Graph will remain blank for 60-90 seconds, and will refresh every 60-90 seconds (based on default parameters).
 
 ## Detect Memory Leaks
