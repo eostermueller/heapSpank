@@ -4,11 +4,10 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.github.eostermueller.heapspank.leakyspank.JMapHistoLine;
 import com.github.eostermueller.heapspank.leakyspank.LeakySpankContext;
-import com.github.eostermueller.heapspank.leakyspank.LimitedSizeQueue;
 import com.github.eostermueller.heapspank.leakyspank.Model;
 import com.github.eostermueller.heapspank.leakyspank.LeakySpankContext.LeakResult;
+import com.github.eostermueller.heapspank.util.LimitedSizeQueue;
 
 /**
  * In this class, I added class names "fred" and "betty" and "wilma"
@@ -57,23 +56,23 @@ public class TestContextWithLessCleanData2 {
 		
 		LeakySpankContext ldc = new LeakySpankContext(-1, 60, 4,0);
 		
-		ldc.addJMapRun(run_1);
-		run_2.getAllOrderByMostUpwardlyMobileAsComparedTo(run_1);
+		ldc.addJMapHistoRun(run_1);
+//		run_2.getAllOrderByMostUpwardlyMobileAsComparedTo(run_1);
 		
 		//The above call calculates the JMapHistoLine.rankIncrease for every line in the model
 		//With rankings calculated, the LDC can do its work.
 		
-		ldc.addJMapRun(run_2);
-		run_3.getAllOrderByMostUpwardlyMobileAsComparedTo(run_2);
+		ldc.addJMapHistoRun(run_2);
+//		run_3.getAllOrderByMostUpwardlyMobileAsComparedTo(run_2);
 		
 		//Ditto, comment above.
 		
-		ldc.addJMapRun(run_3);
-		run_4.getAllOrderByMostUpwardlyMobileAsComparedTo(run_3);
+		ldc.addJMapHistoRun(run_3);
+//		run_4.getAllOrderByMostUpwardlyMobileAsComparedTo(run_3);
 		
 		//Ditto, comment above.
 		
-		ldc.addJMapRun(run_4);
+		ldc.addJMapHistoRun(run_4);
 		
 		LeakResult[] leakSuspects = ldc.getLeakSuspectsOrdered();
 		

@@ -12,11 +12,15 @@ public class JMapHistoLine {
 	 * What was the 'num' value, a ranking of most memory 
 	 * consumed with 1=most memory consumed, for a previous invocation of jmap -histo ?
 	 */
-	public int rankIncrease = Integer.MIN_VALUE; 
+	//public int rankIncrease = Integer.MIN_VALUE; 
 	public long instances = -1;
 	public long bytes = -1;
 	public String className;
+	public long timestampNanos;
+
+	public boolean visited;
 	public JMapHistoLine(String spaceDelimitedJMapHistoLine) {
+		this.timestampNanos = System.nanoTime();
 		spaceDelimitedJMapHistoLine = spaceDelimitedJMapHistoLine.trim();
 		String[] columns = spaceDelimitedJMapHistoLine.split(" ");
 		String num = columns[0];
@@ -28,6 +32,12 @@ public class JMapHistoLine {
 		this.bytes = Long.parseLong(columns[2]);
 		this.className = columns[3];
 	}
+	/**
+	 * Formatting for consumption by this graphing component:
+	 * https://jmeter-plugins.org/wiki/PageDataExtractor/
+	 * @param prefix
+	 * @return
+	 */
 	public String getBytesGraphLabel(String prefix) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(prefix);

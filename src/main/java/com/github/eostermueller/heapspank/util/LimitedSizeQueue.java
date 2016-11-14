@@ -1,4 +1,4 @@
-package com.github.eostermueller.heapspank.leakyspank;
+package com.github.eostermueller.heapspank.util;
 
 import java.util.LinkedList;
 

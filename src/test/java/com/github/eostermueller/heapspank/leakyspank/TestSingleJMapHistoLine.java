@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.github.eostermueller.heapspank.leakyspank.JMapHistoLine;
 import com.github.eostermueller.heapspank.leakyspank.jmeter.LeakySpankSampler;
 
 

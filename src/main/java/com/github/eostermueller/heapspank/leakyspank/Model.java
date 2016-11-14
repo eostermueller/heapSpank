@@ -6,8 +6,10 @@ import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
 
+import com.github.eostermueller.heapspank.leakyspank.LeakySpankContext.LeakResult;
+
 /**
- *
+ *  Pojo representing parsed output of one execution of JAVA_HOME/bin/jmap -histo <myPid>
  */
 public class Model 
 {
@@ -29,6 +31,10 @@ public class Model
 	}
 	public Model(String jMapHistoStdout) {
 		this(jMapHistoStdout,DEFAULT_STARTSWITH_EXCLUDE_FILTER);
+	}
+	public void add(LeakResult[] toAdd) {
+		for(LeakResult result : toAdd)
+			this.put(result.line);
 	}
 	public Model(String jMapHistoStdout, String[] startsWithExcludeFilter) {
 		this.startsWithExcludeFilter = startsWithExcludeFilter;
@@ -76,35 +82,35 @@ public class Model
 		return this.alAllClasses.toArray( new JMapHistoLine[0]);
 	}
 	
-	/**
-	 * 
-	 * @param m2
-	 * @return
-	 */
-	public JMapHistoLine[] getAllOrderByMostUpwardlyMobileAsComparedTo(Model m2) {
-		
-		for(JMapHistoLine l1 : this.alAllClasses) {
-			JMapHistoLine l2 = m2.get(l1.className);
-			if (l2!=null) {
-				l1.rankIncrease = (l2.num -l1.num);
-			} else {
-				l1.rankIncrease = 0;//Integer.MIN_VALUE;
-			}
-		}
-		Collections.sort( this.alAllClasses, this.UPWARDLY_MOBILE_ORDER);
-		return this.alAllClasses.toArray( new JMapHistoLine[0]);
-	}
+//	/**
+//	 * 
+//	 * @param m2
+//	 * @return
+//	 */
+//	public JMapHistoLine[] getAllOrderByMostUpwardlyMobileAsComparedTo(Model m2) {
+//		
+//		for(JMapHistoLine l1 : this.alAllClasses) {
+//			JMapHistoLine l2 = m2.get(l1.className);
+//			if (l2!=null) {
+//				l1.rankIncrease = (l2.num -l1.num);
+//			} else {
+//				l1.rankIncrease = 0;//Integer.MIN_VALUE;
+//			}
+//		}
+//		Collections.sort( this.alAllClasses, this.UPWARDLY_MOBILE_ORDER);
+//		return this.alAllClasses.toArray( new JMapHistoLine[0]);
+//	}
 	static final Comparator<JMapHistoLine> BYTES_ORDER = new Comparator<JMapHistoLine>() {
 		public int compare(JMapHistoLine l1, JMapHistoLine l2) {
 			return (int) (l1.bytes - l2.bytes);
 		}
 	};
 	
-	static final Comparator<JMapHistoLine> UPWARDLY_MOBILE_ORDER = new Comparator<JMapHistoLine>() {
-			public int compare(JMapHistoLine l1, JMapHistoLine l2) {
-				return l1.rankIncrease - l2.rankIncrease;
-			}
-	};
+//	static final Comparator<JMapHistoLine> UPWARDLY_MOBILE_ORDER = new Comparator<JMapHistoLine>() {
+//			public int compare(JMapHistoLine l1, JMapHistoLine l2) {
+//				return l1.rankIncrease - l2.rankIncrease;
+//			}
+//	};
 	public String renderBytes(String prefix) {
 		StringBuilder sb = new StringBuilder();
 		for(JMapHistoLine l : this.alAllClasses) {

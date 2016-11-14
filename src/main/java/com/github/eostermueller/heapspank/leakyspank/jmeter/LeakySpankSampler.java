@@ -36,44 +36,60 @@ public class LeakySpankSampler extends AbstractJavaSamplerClient {
 		LeakySpankContext ctx = getLeakySpankContext(jmeterSamplerContext);
 		getLogger().debug("Start of LeakySpankSampler#runTest");
 		SampleResult result = new SampleResult();
+		result.setDataType(SampleResult.TEXT);
 		result.sampleStart(); // start stopwatch
 		try {
 			String pidToMonitor = String.valueOf(ctx.getPid());
 			String jMapProcessOutput = executeJMapHisto(pidToMonitor,result);
-			result.setSamplerData(jMapProcessOutput);
-			this.getLogger().debug(
-					"Length of jmap output ["
-							+ jMapProcessOutput.toString().length() + "]");
-			this.getLogger().debug(
-					"jmap output [" + jMapProcessOutput.toString() + "]");
+			if (jMapProcessOutput==null || jMapProcessOutput.trim().length()==0) {
+				String error = "Tried to execute jmap and got nothing.  Is pid [" + ctx.getPid() + "] still active?  Found that PID in the HEAPSPANK_PID variable in JMeter. Is jmap even in the PATH?  Need JAVA_HOME/bin to be in the OS's PATH variable.";
+				result.setSuccessful(false);
+				result.setSamplerData("jmap -histo " + ctx.getPid());
+				result.setResponseData(error,"UTF-8");
+				getLogger().error(error);
+			} else {
+				
+				result.setSamplerData("jmap -histo " + ctx.getPid() + "\n" + jMapProcessOutput);
+				this.getLogger().debug(
+						"Length of jmap output ["
+								+ jMapProcessOutput.toString().length() + "]");
+				this.getLogger().debug(
+						"jmap output [" + jMapProcessOutput.toString() + "]");
 
-			Model currentModel = new Model(jMapProcessOutput.toString());
-			ctx.addJMapRun(currentModel);
-			ctx.incrementRunCount();
-			
-			/**
-			 * Display some results, but only at the end of each 'window', not after every jmap -histo run.
-			 * By default, you get 4 jmap -histo runs per 'window'.
-			 */
-			if (ctx.getCurrentRunCount() % ctx.getRunCountPerWindow()==0) {
-				LeakResult[] suspects = ctx.getLeakSuspectsOrdered();
-				Model resultsForWindow = new Model();
-				//select the last N from the array -- the most likely suspects for this window.
-				int startIndex = (suspects.length - ctx.getTopNSuspects()) -1;
-				if (startIndex < 0) startIndex = 0; 
-				for(int i = startIndex; 
-						i < suspects.length; 
-						i++) {
-					resultsForWindow.put(suspects[i].line);
+				Model currentModel = new Model(jMapProcessOutput.toString());
+				ctx.addJMapHistoRun(currentModel);
+				//ctx.incrementRunCount();
+				
+				/**
+				 * Display some results, but only at the end of each 'window', not after every jmap -histo run.
+				 * By default, you get 4 jmap -histo runs per 'window'.
+				 */
+				if (ctx.getCurrentRunCount() % ctx.getRunCountPerWindow()==0) {
+//					LeakResult[] suspects = ctx.getLeakSuspectsOrdered();
+//					Model resultsForWindow = new Model();
+//					//select the last N from the array -- the most likely suspects for this window.
+//					int startIndex = (suspects.length - ctx.getTopNSuspects()) -1;
+//					if (startIndex < 0) startIndex = 0; 
+//					for(int i = startIndex; 
+//							i < suspects.length; 
+//							i++) {
+//						resultsForWindow.put(suspects[i].line);
+//					}
+					
+					
+					Model resultsForWindow = new Model();
+					resultsForWindow.add(ctx.getTopResults());
+					
+					getLogger().info("Rendered output [" + resultsForWindow.renderBytes(LEAKY_SPANKY) + "]");
+					//The formating of these results is tailored very to work with a
+					//specially configured "jp@gc Page Data Extractor" from JMeterrPlugins.
+					result.setResponseData(resultsForWindow.renderBytes(LEAKY_SPANKY), "UTF-8");
 				}
-				getLogger().info("Rendered output [" + resultsForWindow.renderBytes(LEAKY_SPANKY) + "]");
-				//The formating of these results is tailored very to work with a
-				//specially configured "jp@gc Page Data Extractor" from JMeterrPlugins.
-				result.setResponseData(resultsForWindow.renderBytes(LEAKY_SPANKY), "UTF-8");
-			}
 
-			result.setDataType(SampleResult.TEXT);
-			result.setResponseCodeOK();
+				result.setSuccessful(true);
+				result.setResponseCodeOK();
+				result.setResponseOK();
+			}
 			result.sampleEnd();// time for all transformations
 		} catch (Exception e) {
 			StringWriter sw = new StringWriter();

@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.github.eostermueller.heapspank.leakyspank.JMapHistoLine;
 import com.github.eostermueller.heapspank.leakyspank.Model;
 
 public class TestModel {
@@ -101,26 +100,26 @@ public class TestModel {
 		assertEquals("Sum of all the 'bytes' values was not right",2497504,longBytes_sum);
 	}
 	
-	/**
-	 * The class that moved up the most in the "num" field ranking should be sorted to the very top.
-	 */
-	@Test
-	public void testUpwardMobility() {
-		
-		Model m1 = new Model(JMAP_HISTO_STDOUT_01);
-		Model m2 = new Model(JMAP_HISTO_STDOUT_02);
-		
-		JMapHistoLine[] all = m2.getAll();
-		assertNotEquals("Sanity check. This is a no brainer, just right class (com.acme.SocksSocketImpl) isn't inadvertently put into the right position [0]",
-				"com.acme.SocksSocketImpl", 
-				all[all.length-1].className);
-		
-		all = m2.getAllOrderByMostUpwardlyMobileAsComparedTo(m1);
-		assertEquals("The class that increased the most in size did not get sorted to the bottom as expected",
-				"com.acme.SocksSocketImpl", 
-				all[all.length-1].className);
-		
-	}
+//	/**
+//	 * The class that moved up the most in the "num" field ranking should be sorted to the very top.
+//	 */
+//	@Test
+//	public void testUpwardMobility() {
+//		
+//		Model m1 = new Model(JMAP_HISTO_STDOUT_01);
+//		Model m2 = new Model(JMAP_HISTO_STDOUT_02);
+//		
+//		JMapHistoLine[] all = m2.getAll();
+//		assertNotEquals("Sanity check. This is a no brainer, just right class (com.acme.SocksSocketImpl) isn't inadvertently put into the right position [0]",
+//				"com.acme.SocksSocketImpl", 
+//				all[all.length-1].className);
+//		
+//		all = m2.getAllOrderByMostUpwardlyMobileAsComparedTo(m1);
+//		assertEquals("The class that increased the most in size did not get sorted to the bottom as expected",
+//				"com.acme.SocksSocketImpl", 
+//				all[all.length-1].className);
+//		
+//	}
 	@Test
 	public void canAddToEmptyModel() {
 		Model m = new Model();
