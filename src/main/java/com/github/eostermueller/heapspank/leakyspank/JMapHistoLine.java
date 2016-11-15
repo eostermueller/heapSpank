@@ -18,7 +18,7 @@ public class JMapHistoLine {
 	public String className;
 	public long timestampNanos;
 
-	public boolean visited;
+	public int visitCount;
 	public JMapHistoLine(String spaceDelimitedJMapHistoLine) {
 		this.timestampNanos = System.nanoTime();
 		spaceDelimitedJMapHistoLine = spaceDelimitedJMapHistoLine.trim();

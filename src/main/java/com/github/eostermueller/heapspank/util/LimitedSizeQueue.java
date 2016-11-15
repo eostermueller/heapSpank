@@ -1,6 +1,8 @@
 package com.github.eostermueller.heapspank.util;
 
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Stolen from http://stackoverflow.com/questions/5498865/size-limited-queue-that-holds-last-n-elements-in-java
@@ -8,7 +10,8 @@ import java.util.LinkedList;
  *
  * @param <E>
  */
-public class LimitedSizeQueue<E> extends LinkedList<E> {
+//public class LimitedSizeQueue<E> extends LinkedList<E> {
+public class LimitedSizeQueue<E> extends ConcurrentLinkedQueue<E> {
     private int limit;
 
     public LimitedSizeQueue(int limit) {
@@ -22,6 +25,21 @@ public class LimitedSizeQueue<E> extends LinkedList<E> {
            super.remove();
         }
         return added;
+    }
+    public E peekFirst() {
+    	Iterator i = this.iterator();
+    	E item = null;
+    	if (i.hasNext())
+    		item = (E) i.next();
+    	return item;
+    }
+    public E peekLast() {
+    	Iterator i = this.iterator();
+    	E item = null;
+    	while(i.hasNext()) {
+    		item = (E) i.next();
+    	}
+    	return item;
     }
 
 }

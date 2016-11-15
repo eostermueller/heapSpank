@@ -49,7 +49,7 @@ public class DefaultConfig implements Config {
 	public DefaultConfig(String[] args) {
 		this.pid = Long.parseLong(args[0]);
 		System.out.format("0: %s%n", args[0]);
-		this.setjMapHistoIntervalSeconds(10);//should be 15 for release
+		this.setjMapHistoIntervalSeconds(5);//should be 15 for release
 		this.setjMapCountPerWindow(4);
 		this.setSuspectCountPerWindow(10);
 	}

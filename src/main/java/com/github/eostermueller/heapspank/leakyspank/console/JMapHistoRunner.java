@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Queue;
@@ -42,7 +43,7 @@ public class JMapHistoRunner implements Runnable {
 		StringBuilder sb = new StringBuilder();
 			
 		synchronized (this.exceptionText) {
-			ListIterator<String> listIterator = this.exceptionText.listIterator();
+			Iterator<String> listIterator = this.exceptionText.iterator();
 			while (listIterator.hasNext())
 				sb.append(listIterator.next());
 		}

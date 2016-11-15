@@ -48,7 +48,7 @@ public class LeakySpankConsole implements DisplayUpdateListener {
 					this.leakySpankContext.addJMapHistoRun(m);
 				printTopBar();
 				view.printView();
-				//printDebug();
+				printDebug();
 				System.out.flush();
 				if (iterations >= maxIterations_ && maxIterations_ > 0) {
 					break;
@@ -99,13 +99,13 @@ public class LeakySpankConsole implements DisplayUpdateListener {
 				.getScreenRefreshIntervalSeconds();
 		this.maxIterations_ = config2.getMaxIterations();
 		this.setLeakySpankContext(new LeakySpankContext(config2.getPid(),
-				config2.getjMapHistoIntervalSeconds(), config2
-						.getjMapCountPerWindow(), config2
-						.getSuspectCountPerWindow()));
+				config2.getjMapHistoIntervalSeconds(), 
+				config2.getjMapCountPerWindow(), 
+				config2.getSuspectCountPerWindow()));
 
 		this.getLeakySpankContext().setTopNSuspects(
 				config2.getSuspectCountPerWindow());
-		this.getLeakySpankContext().setDisplayQueue(debug);
+		this.getLeakySpankContext().setDebugDisplayQueue(debug);
 
 		jMapHistoRunner = new JMapHistoRunner(config2.getPid(),
 				config2.getjMapHistoIntervalSeconds(),

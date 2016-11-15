@@ -41,9 +41,9 @@ public class TestSortingWithTestCalculations {
 			ctx.incrementRunCount();
 		
 		List<LeakResult> leakCandidates = new ArrayList<LeakResult>();
-		leakCandidates.add( ctx.tallyLeakActivity(line1a));
-		leakCandidates.add( ctx.tallyLeakActivity(line2a));
-		leakCandidates.add( ctx.tallyLeakActivity(line3a));
+		leakCandidates.add( ctx.tallyLeakActivityFromPreviousRuns(line1a));
+		leakCandidates.add( ctx.tallyLeakActivityFromPreviousRuns(line2a));
+		leakCandidates.add( ctx.tallyLeakActivityFromPreviousRuns(line3a));
 		
 		/**
 		 * Sorting will be based on the following src/test/java calculations,

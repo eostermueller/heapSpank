@@ -23,18 +23,22 @@ public class TestTheLeakiestWithLeakySpankCalculations {
 
 	@Test
 	public void testSimpleResultTransfer() {
-		JMapHistoLine line1a = new JMapHistoLine(RUN_A_LINE_1);
-		JMapHistoLine line2a = new JMapHistoLine(RUN_A_LINE_2);
-		JMapHistoLine line3a = new JMapHistoLine(RUN_A_LINE_3);
-		Model run_A = new Model();
-		run_A.put(line1a);
-		run_A.put(line2a);
-		run_A.put(line3a);
+		Model run_B = new Model();
+		JMapHistoLine line1b = new JMapHistoLine(RUN_B_LINE_1);
+		JMapHistoLine line2b = new JMapHistoLine(RUN_B_LINE_2);
+		run_B.put(line1b);
+		run_B.put(line2b);
+		Model run_C = new Model();
+		JMapHistoLine line1c = new JMapHistoLine(RUN_C_LINE_1);
+		JMapHistoLine line2c = new JMapHistoLine(RUN_C_LINE_2);
+		run_C.put(line1c);
+		run_C.put(line2c);
 
 		
 		//long pid, int interval_in_seconds, int interval_count, int topNSupsects
 		LeakySpankContext ctx = new LeakySpankContext(1,1,1,5);
-		ctx.addJMapHistoRun(run_A);
+		ctx.addJMapHistoRun(run_B);
+		ctx.addJMapHistoRun(run_C);
 		
 		LeakResult[] results = ctx.getTopResults();
 		TheLeakiest theLeakiest = new TheLeakiest(5);
@@ -42,28 +46,22 @@ public class TestTheLeakiestWithLeakySpankCalculations {
 		
 		LeakResult[] allResults = theLeakiest.getTopResults();
 		
-		assertEquals("Put put in 3 JMap histo lines, should have gotten 3 back out", 3, allResults.length);
-		
-		assertEquals(allResults[0].line.className , "sun.reflect.GeneratedMethodAccessor3");
-		assertEquals(16, allResults[0].line.bytes);
+		assertEquals("Put in 2 JMap histo lines, should have gotten 2 back out", 2, allResults.length);
+
+		assertEquals(allResults[0].line.className , "sun.reflect.GeneratedMethodAccessor1");
+		assertEquals(160, allResults[0].line.bytes);
 		assertEquals(1, allResults[0].countRunsPresent);
 		assertEquals(0, allResults[0].countRunsWithBytesIncrease);
 		assertEquals(0, allResults[0].countRunsWithInstanceCountIncrease);
 		assertEquals(0, allResults[0].countRunsWithLeakierRank);
-
+		
 		assertEquals(allResults[1].line.className , "sun.reflect.GeneratedMethodAccessor2");
 		assertEquals(15, allResults[1].line.bytes);
 		assertEquals(1, allResults[1].countRunsPresent);
 		assertEquals(0, allResults[1].countRunsWithBytesIncrease);
 		assertEquals(0, allResults[1].countRunsWithInstanceCountIncrease);
-		assertEquals(0, allResults[1].countRunsWithLeakierRank);
+		assertEquals(1, allResults[1].countRunsWithLeakierRank);
 
-		assertEquals(allResults[2].line.className , "sun.reflect.GeneratedMethodAccessor1");
-		assertEquals(14, allResults[2].line.bytes);
-		assertEquals(1, allResults[2].countRunsPresent);
-		assertEquals(0, allResults[2].countRunsWithBytesIncrease);
-		assertEquals(0, allResults[2].countRunsWithInstanceCountIncrease);
-		assertEquals(0, allResults[2].countRunsWithLeakierRank);
 	}
 	
 	@Test
@@ -105,14 +103,14 @@ public class TestTheLeakiestWithLeakySpankCalculations {
 		
 		assertEquals("sun.reflect.GeneratedMethodAccessor1", allResults[0].line.className  );
 		//assertEquals(16, allResults[0].line.bytes);
-		assertEquals(3, allResults[0].countRunsPresent);
-		assertEquals(2, allResults[0].countRunsWithBytesIncrease);
+		assertEquals(2, allResults[0].countRunsPresent);
+		assertEquals(1, allResults[0].countRunsWithBytesIncrease);
 		assertEquals(1, allResults[0].countRunsWithInstanceCountIncrease);
 		assertEquals(0, allResults[0].countRunsWithLeakierRank);
 
 		assertEquals("sun.reflect.GeneratedMethodAccessor2", allResults[1].line.className );
 		assertEquals(15, allResults[1].line.bytes);
-		assertEquals(3, allResults[1].countRunsPresent);
+		assertEquals(2, allResults[1].countRunsPresent);
 		assertEquals(1, allResults[1].countRunsWithBytesIncrease);
 		assertEquals(1, allResults[1].countRunsWithInstanceCountIncrease);
 		assertEquals(1, allResults[1].countRunsWithLeakierRank);

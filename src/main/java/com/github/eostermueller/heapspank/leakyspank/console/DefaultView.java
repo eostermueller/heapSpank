@@ -5,11 +5,16 @@ import java.util.Queue;
 
 import com.github.eostermueller.heapspank.leakyspank.LeakySpankContext;
 import com.github.eostermueller.heapspank.leakyspank.LeakySpankContext.LeakResult;
+import com.github.eostermueller.heapspank.leakyspank.LeakySpankContext.WindowClosedEvent;
 import com.github.eostermueller.heapspank.leakyspank.Model;
+import com.github.eostermueller.heapspank.util.BaseEvent;
+import com.github.eostermueller.heapspank.util.EventListener;
 
-public class DefaultView implements ConsoleView {
+public class DefaultView implements ConsoleView, EventListener {
 	public DefaultView() {
 		this.theLeakiest = new TheLeakiest(10);
+		
+		
 	}
 	LeakySpankContext leakySpankContext = null;
 	TheLeakiest theLeakiest = null;
@@ -48,19 +53,7 @@ public class DefaultView implements ConsoleView {
 		
 		displayHeader();
 		
-		if (ctx.getCurrentRunCount() % ctx.getRunCountPerWindow()==0) {
-			this.theLeakiest.addLeakResults(ctx.getTopResults());
-			
-			StringBuilder sb = new StringBuilder();
-			for (LeakResult result : this.theLeakiest.getTopResults() ) {
-				sb.append( displayOneLine(result) );
-			}
-			this.setMultiLineDisplayData(sb.toString());
-			this.displayUpdateListener.updated();
-		}
-		
 		System.out.print(this.getMultiLineDisplayData());
-		
 		
 	}
 	private void setMultiLineDisplayData(String v) {
@@ -125,6 +118,8 @@ public class DefaultView implements ConsoleView {
 	@Override
 	public void setLeakySpankContext(LeakySpankContext ctx) {
 		this.leakySpankContext  = ctx;
+		
+		ctx.addWindowClosedListener(this);
 	}
 	@Override
 	public LeakySpankContext getLeakySpankContext() {
@@ -138,5 +133,20 @@ public class DefaultView implements ConsoleView {
 	@Override 
 	public DisplayUpdateListener getDisplayUpdateListener() {
 		return this.displayUpdateListener;
+	}
+	@Override
+	public void onEvent(BaseEvent e) {
+		
+		if (e instanceof WindowClosedEvent) {
+			this.theLeakiest.addLeakResults(this.getLeakySpankContext().getTopResults());
+			
+			StringBuilder sb = new StringBuilder();
+			for (LeakResult result : this.theLeakiest.getTopResults() ) {
+				sb.append( displayOneLine(result) );
+			}
+			this.setMultiLineDisplayData(sb.toString());
+			this.displayUpdateListener.updated();
+		}
+		
 	}
 }

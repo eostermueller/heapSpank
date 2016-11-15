@@ -3,20 +3,37 @@ package com.github.eostermueller.heapspank.leakyspank;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 import com.github.eostermueller.heapspank.leakyspank.LeakySpankContext.LeakResult;
+import com.github.eostermueller.heapspank.leakyspank.console.TheLeakiest;
+import com.github.eostermueller.heapspank.util.BaseEvent;
+import com.github.eostermueller.heapspank.util.EventListener;
 import com.github.eostermueller.heapspank.util.LimitedSizeQueue;
 
 public class LeakySpankContext {
 
+	private List<EventListener> windowClosedListener = new ArrayList<EventListener>();
+	public void addWindowClosedListener(EventListener e) {
+		this.windowClosedListener.add(e);
+	}
+	public static class WindowClosedEvent extends BaseEvent {
+		
+	}
 	private static final String LEAKY_SPANK = "leakySpank: ";
 	private int currentRunCount  = 0;
 	private LimitedSizeQueue<String> debugDisplayQ;
 	public void incrementRunCount() {
 		this.currentRunCount++;
+		
+		if ( (this.currentRunCount -1) % this.getRunCountPerWindow() == 0 ) {
+			WindowClosedEvent wce = new WindowClosedEvent();
+			for(EventListener el : this.windowClosedListener)
+				el.onEvent(wce);
+		}
 	}
-	public void setDisplayQueue(LimitedSizeQueue<String> display) {
+	public void setDebugDisplayQueue(LimitedSizeQueue<String> display) {
 		this.debugDisplayQ = display;
 	}
 	public LimitedSizeQueue<String> getDebugDisplayQ() {
@@ -72,7 +89,7 @@ public class LeakySpankContext {
 		this.setTopNSuspects(topNSupsects);
 		this.setCountPresentThreshold(interval_count);
 		
-		this.recentJMapRuns = new LimitedSizeQueue<Model>(this.runCountPerWindow);
+		this.recentJMapRuns = new LimitedSizeQueue<Model>(this.getRunCountPerWindow()+1);//the extra one will provide N comparisons between each of the N+1 items.
 		this.setRankIncreaseThreshold(1); //if current JMap -histo 'num' is < prev, then increment LeakResult.countRunsWithRankIncrease
 		
 	}
@@ -92,17 +109,17 @@ public class LeakySpankContext {
 	}
 	
 	private void debug(String msg) {
-		if (this.getDebugDisplayQ()!=null)
-			this.getDebugDisplayQ().push(msg);
+//		System.out.println(msg);
+//		if (this.getDebugDisplayQ()!=null)
+//			this.getDebugDisplayQ().offer(msg);
 	}
 	public List<LeakResult> getLeakSuspectsUnOrdered() {
-		// TODO Auto-generated method stub
-		Model mostRecent = this.recentJMapRuns.peekLast();
-		debug(String.format("recent jmapRuns Count %d", this.recentJMapRuns.size()) );
+		Model mostRecent = this.recentJMapRuns.peekLast();//choose most recent run if the X runs in the window, because this is most up-to-date byte count.
+		//debug(String.format("recent jmapRuns Count %d", this.recentJMapRuns.size()) );
 		List<LeakResult> results = new ArrayList<LeakResult>();
 		if (mostRecent!=null) {
 			for(JMapHistoLine line : mostRecent.getAll())     {
-				results.add(tallyLeakActivity(line));
+				results.add(tallyLeakActivityFromPreviousRuns(line));
 			}
 		}
 		return results;
@@ -113,59 +130,62 @@ public class LeakySpankContext {
 	 */
 	public LeakResult[] getLeakSuspectsOrdered() {
 		List suspects = this.getLeakSuspectsUnOrdered();
-		//Collections.sort( suspects, LeakySpankContext.LEAK_SCORE_ORDER);
 		Collections.sort( suspects, LeakySpankContext.PCT_OF_RUNS_WITH_UPWARD_TRENDING_BYTES);
 		return (LeakResult[]) suspects.toArray( new LeakResult[0]);
 	}
 	/**
 	 * Given a single line from JMapHisto results, 
 	 * tall counts of various stats.
-	 * @param line
+	 * @param lineToTally
 	 * @return
 	 */
-	public LeakResult tallyLeakActivity(JMapHistoLine line) {
+	public LeakResult tallyLeakActivityFromPreviousRuns(JMapHistoLine lineToTally) {
 		LeakResult result = new LeakResult();
-		result.line  = line;
-		JMapHistoLine priorRunLine = null;
-		this.debug(String.format("in tally jmh runs [%d]", this.recentJMapRuns.size()));
-		for(Model run : this.recentJMapRuns) {
-			int visitedCount = 0;
-			JMapHistoLine currentRunLine = run.get(line.className);
+		result.line  = lineToTally;
+		
+		Iterator<Model> modelIterator = this.recentJMapRuns.iterator();
+		if (modelIterator.hasNext()) {
+			Model previousModel = modelIterator.next();
 			
-			if (currentRunLine !=null && currentRunLine.visited )
-				visitedCount++;
-			if (currentRunLine !=null && !currentRunLine.visited ) {
-				result.countRunsPresent++;
+			while( modelIterator.hasNext()) {
+				Model currentModel = modelIterator.next();
+				
+				JMapHistoLine currentRunLine = currentModel.get(lineToTally.className);
+				
+				JMapHistoLine previousRunLine = previousModel.get(lineToTally.className);
+				
+				if (currentRunLine!=null && previousRunLine!=null) { //Not all classes show up in all JMapHisto outputs
+					currentRunLine.visitCount++;
+					this.debug(String.format("Visit count [%d] class [%s", currentRunLine.visitCount, currentRunLine.className));
 
-				if (priorRunLine != null) {
-					if (currentRunLine.timestampNanos < priorRunLine.timestampNanos)
+					previousRunLine.visitCount++;
+					this.debug(String.format("PrevVisit count [%d] class [%s", previousRunLine.visitCount, previousRunLine.className));
+					
+					result.countRunsPresent++;
+					if ( currentRunLine.timestampNanos < previousRunLine.timestampNanos)
 						throw new RuntimeException("Perhaps iterating in the wrong direction?");
 					
 					/**
 					 * jmap -histo outputs the 'num' column, which is the rank.
-					 * If this line/class's num=100 (meaning there are 99 classes that use more memory thank this class) 
-					 * and for the same class the previous num=101, then we're more likely to be leaky, so increment this counter.
+					 * If currentRunLine's num=100 
+					 * (meaning there are 99 classes that use more memory thank this class) 
+					 * and for the same class the previous num=101, 
+					 * then we're more likely to be leaky, so increment this counter.
 					 */
-					if (priorRunLine.num - currentRunLine.num >= this.getRankIncreaseThreshold() )
+					if (previousRunLine.num - currentRunLine.num >= this.getRankIncreaseThreshold() )
 						result.countRunsWithLeakierRank++;
 
 					//if (currentRunLine.bytes - priorRunLine.bytes > this.getBytesIncreaseThreshold() )
-					if (currentRunLine.bytes - priorRunLine.bytes >= 0 )
+					if (currentRunLine.bytes - previousRunLine.bytes > 0 )
 						result.countRunsWithBytesIncrease++;
 					
-					if (currentRunLine.instances - priorRunLine.instances > this.getInstancesIncreaseThreshold() )
+					if (currentRunLine.instances - previousRunLine.instances > 0 )
 						result.countRunsWithInstanceCountIncrease++;
-
-					currentRunLine.visited = true;
-					//				if (currentRunLine.rankIncrease > this.getRankIncreaseThreshold() )
-//						result.countRunsWithRankIncrease++;
 				}
-				priorRunLine = currentRunLine;
-			}				
-			this.debug(String.format("visited count [%d]", visitedCount));
+				previousModel = currentModel;
+			}
 		}
 		return result;
-		
 	}
 	public long getInstancesIncreaseThreshold() {
 		return instancesIncreaseThreshold;
@@ -179,20 +199,6 @@ public class LeakySpankContext {
 	public void setBytesIncreaseThreshold(long bytesIncreaseThreshold) {
 		this.bytesIncreaseThreshold = bytesIncreaseThreshold;
 	}
-	static final Comparator<LeakResult> LEAK_SCORE_ORDER = new Comparator<LeakResult>() {
-		public int compare(LeakResult l1, LeakResult l2) {
-			int compareResult = l1.getLeakScore() - l2.getLeakScore();
-			//if the score is tied, then the one with the larger byte count wins.
-			if (compareResult==0) {
-				if (l1.line.bytes < l2.line.bytes)
-					compareResult = -1;
-				else
-					if (l1.line.bytes > l2.line.bytes)
-						compareResult = 1;
-			}
-			return ( compareResult );
-		}
-	};
 	public static final Comparator<LeakResult> PCT_OF_RUNS_WITH_UPWARD_TRENDING_BYTES = new Comparator<LeakResult>() {
 		/**
 		 * Sort descending, so biggest leak shows up at 0 index. 
@@ -220,8 +226,6 @@ public class LeakySpankContext {
 					else if (instanceCountDiff==0) {
 						rc = o2.line.className.compareToIgnoreCase(o1.line.className);
 					}
-					
-					
 				}
 			}
 			return rc;
@@ -245,9 +249,8 @@ public class LeakySpankContext {
 		public double getPercentageOfRunsWithUpwardByteTrend() {
 			double rc = 0;
 			
-			
-			double totalRunCount = LeakySpankContext.this.getCurrentRunCount();
-			if (this.countRunsWithBytesIncrease == 0 || totalRunCount == 0)
+			double totalRunCount = LeakySpankContext.this.getCurrentRunCount() -1;
+			if (this.countRunsWithBytesIncrease == 0 || totalRunCount == 0) // avoid divide by 0 problems.
 				rc = 0;
 			else
 				rc = this.countRunsWithBytesIncrease / totalRunCount;
