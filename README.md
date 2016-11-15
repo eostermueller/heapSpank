@@ -6,7 +6,7 @@
 * Only tested on MacOS with HotSpot JDK....a JRE is not enough b/c it lacks jmap executable.
 * Support for Windows and Linux coming soon!
 
-![Quick Memory Leak Detection](http://recordit.co/Rvwiu4atZL)
+![Quick Memory Leak Detection](http://recordit.co/AK4ekK09Hk)
 
 
 ## Install
