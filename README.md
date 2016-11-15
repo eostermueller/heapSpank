@@ -1,9 +1,8 @@
 # heapSpank
-* Find leaks fast in your JVM's heap.  
+* Find leaks fast in your JVM's heap, sometimes in less than 1 minute.  
 * Just look for classes high LKY% and large byte counts.
 * heapSpank compares byte counts over time of all classes in your JVM.  
-* Classes with upward trending consumption are graphed.
-* Data provided by [JAVA_HOME/bin/jmap -histo myPid](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr014.html#BABJIIHH).
+* heapSpank's data provided by [JAVA_HOME/bin/jmap -histo myPid](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr014.html#BABJIIHH).
 * Only tested on MacOS with HotSpot JDK....a JRE is not enough b/c it lacks jmap executable.
 * Support for Windows and Linux coming soon!
 
