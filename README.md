@@ -2,6 +2,7 @@
 
 Just pass in the PID of your JVM the names of the leakiest classes (high LKY%) will bubble up to the top.
 
+./heapSpank.sh 2351
 ![Quick Memory Leak Detection](https://cloud.githubusercontent.com/assets/175773/20299273/da86b044-aadf-11e6-98c9-0658af68ad85.png)
 
 * heapSpank compares byte counts over time of all classes in your JVM.
