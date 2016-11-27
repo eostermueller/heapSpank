@@ -4,7 +4,7 @@
 * heapSpank compares byte counts over time of all classes in your JVM.  
 * heapSpank's data provided by [JAVA_HOME/bin/jmap -histo myPid](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr014.html#BABJIIHH).
 * Only tested on MacOS with HotSpot JDK....a JRE is not enough b/c it lacks jmap executable.
-* Support for Windows and Linux coming soon!
+* Support for Windows coming soon! Tested on Linux and MacOs.
 
 ![Quick Memory Leak Detection](https://cloud.githubusercontent.com/assets/175773/20299273/da86b044-aadf-11e6-98c9-0658af68ad85.png)
 
