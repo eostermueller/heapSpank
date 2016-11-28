@@ -1,4 +1,4 @@
-# heapSpank
+# leakySpank
 
 Just pass in the PID of your JVM.  Apply steady-state load and wait a few minutes . The names of the leakiest classes (high LKY%) will bubble up to the top of the console.
 
