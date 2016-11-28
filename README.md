@@ -2,11 +2,11 @@
 
 Just pass in the PID of your JVM.  Apply steady-state load and wait a few minutes . The names of the leakiest classes (high LKY%) will bubble up to the top of the console.
 
-./heapSpank.sh 2351
+./leakySpank.sh 2351
 ![Quick Memory Leak Detection](https://cloud.githubusercontent.com/assets/175773/20299273/da86b044-aadf-11e6-98c9-0658af68ad85.png)
 
-* heapSpank compares byte counts over time of all classes in your JVM.
-* heapSpank's data provided by [JAVA_HOME/bin/jmap -histo myPid](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr014.html#BABJIIHH).
+* leakySpank compares byte counts over time of all classes in your JVM.
+* leakySpank's data provided by [JAVA_HOME/bin/jmap -histo myPid](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr014.html#BABJIIHH).
 * Support for Windows coming soon! Tested on Linux and MacOs with HotSpot JDK (JRE is not enough).
 * Small leaks, as well as large ones, are identified.
 
