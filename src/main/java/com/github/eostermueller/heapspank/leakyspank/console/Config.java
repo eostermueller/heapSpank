@@ -1,5 +1,7 @@
 package com.github.eostermueller.heapspank.leakyspank.console;
 
+import java.util.List;
+
 public interface Config {
 
 	public abstract int getScreenRefreshIntervalSeconds();
@@ -26,5 +28,7 @@ public interface Config {
 	String getViewClass();
 
 	public abstract int getMaxIterations();
+
+	void setArgs(String[] args) throws CommandLineParameterException;
 
 }

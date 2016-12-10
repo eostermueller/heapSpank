@@ -13,9 +13,10 @@ import com.github.eostermueller.heapspank.util.LimitedSizeQueue;
 
 public class LeakySpankConsole implements DisplayUpdateListener {
 
-	private static final String VERSION = "v0.1";
-	private static final String BANNER_FORMAT = "  %4ds   leakySpank memory leak detector version [%s]%n";
-	private static final String BANNER_FORMAT_ALT = "# %4ds   leakySpank memory leak detector version [%s] ##%n";
+	private static final String VERSION = "v0.6";
+	private static final String BANNER_FORMAT = "  %4ds   heapSpank memory leak detector version [%s]%n";
+	private static final String BANNER_FORMAT_ALT = "# %4ds   heapSpank memory leak detector version [%s] ##%n";
+	private static final String INDENT = "\t";
 	Queue<Model> jmapHistoOutputQueue = new ConcurrentLinkedQueue<Model>();
 	JMapHistoRunner jMapHistoRunner = null;
 	LeakySpankContext leakySpankContext = null;
@@ -29,9 +30,44 @@ public class LeakySpankConsole implements DisplayUpdateListener {
 	public static void main(String args[]) throws InstantiationException,
 			IllegalAccessException, ClassNotFoundException {
 		LeakySpankConsole leakySpankConsole = new LeakySpankConsole();
-		Config config = new DefaultConfig(args);
-		leakySpankConsole.init(config);
-		leakySpankConsole.loopForever(leakySpankConsole.getConsoleView());
+		Config config;
+		try {
+			config = DefaultConfig.createNew(args);
+			if (config != null) {
+				leakySpankConsole.init(config);
+				leakySpankConsole.loopForever(leakySpankConsole.getConsoleView());
+			} else {
+				System.out.println("Fatal error.  unable to create configuration.");
+				System.out.println( getUsage(args) );
+			}
+		} catch (CommandLineParameterException e) {
+			System.out.println("\n");
+			System.out.println(e.getMessage());
+			System.out.println( getUsage(args) );
+		}
+	}
+
+	private static String getUsage(String[] args) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("\n");
+		sb.append("\n");
+		sb.append(INDENT + "------------------------------------------\n");
+		sb.append(INDENT + "Usage for heapSpank memory leak detection.\n");
+		sb.append("\n");
+		sb.append(INDENT + INDENT + "java -jar heapSpank.jar <myPid>\n");
+		sb.append("\n");
+		sb.append(INDENT + "OR\n");
+		sb.append("\n");
+		sb.append(INDENT + INDENT + "java -jar heapSpank.jar <myPid> -config <myConfig>\n");
+		sb.append("\n");
+		sb.append(INDENT + "WHERE\n");
+		sb.append("\n");
+		sb.append(INDENT + INDENT + "-- <myPid> is the process id (pid) of the java process to monitor for memory leaks.\n");
+		sb.append(INDENT + INDENT + "           Run JAVA_HOME/bin/jps to display pids of all running JVMs.\n");
+		sb.append("\n");
+		sb.append(INDENT + INDENT + "-- <myConfig> is the full package and class name of a your custom class \n");
+		sb.append(INDENT + INDENT + "       that implements com.github.eostermueller.heapspank.leakyspank.console.Config\n");
+		return sb.toString();
 	}
 
 	private void loopForever(ConsoleView view) {
