@@ -1,4 +1,4 @@
-heapSpank detects memory leaks fast!  Just point to the process id (pid) of a running process like this:
+heapSpank detects memory leaks fast!  Just [download the jar](https://github.com/eostermueller/heapSpank/releases/download/v0.6/heapSpank-0.6.jar) and point to the process id (pid) of a running process like this:
 
     java -jar heapSpank-0.6.jar 81731
 
