@@ -10,7 +10,6 @@ Using data from [JAVA_HOME/bin/jmap -histo myPid](https://docs.oracle.com/javase
 
 ## Notes
 * Make sure JAVA_HOME/bin is in your path (for jmap executable).
-folder on your hard disk.
 * For best results, warm up an application for a few minutes at 'steady state' before launching heapSpank.
 * Support for MS-Windows coming soon! Tested on Linux and MacOs with HotSpot JDK (JRE is not enough).
 * Small leaks, as well as large ones, are identified.
