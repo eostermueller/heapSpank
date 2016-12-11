@@ -9,7 +9,6 @@ Using data from [JAVA_HOME/bin/jmap -histo myPid](https://docs.oracle.com/javase
 
 
 ## Notes
-* [Apache 2.0 license](https://github.com/eostermueller/heapSpank/blob/master/LICENSE.txt)
 * Make sure JAVA_HOME/bin is in your path, because heapSpank repeatedly calls jmap -histo under the covers, at 5 second intervals.  See configuration section below to change the interval.
 * For best results, warm up an application for a few minutes at 'steady state' before launching heapSpank.
 * Support for MS-Windows coming soon! Tested on Linux and MacOs with HotSpot JDK (JRE is not enough).
@@ -30,5 +29,6 @@ Got questions or feedback?  Discuss heapSpank by sending email to forum at heapS
 
 ## Competition
 In case heapSpank is not quite what you were looking for, here are a few similar tools that do memory comparisons in search of memory leaks:
-* [This python script](http://alexpunnen.blogspot.com/2015/06/long-running-java-process-resource.html) compare two histogram (jmap -histo) dumps.
+* [This python script](http://alexpunnen.blogspot.com/2015/06/long-running-java-process-resource.html) compares two histogram (jmap -histo) dumps.
 * [Eclipse MAT](https://wiki.eclipse.org/MemoryAnalyzer) will compare two heap dumps.
+
