@@ -1,6 +1,6 @@
 heapSpank detects memory leaks fast!  Just [download the jar](https://github.com/eostermueller/heapSpank/releases/download/v0.6/heapSpank-0.6.jar) and point to the process id (pid) of a running JVM like this:
 
-    java -jar heapSpank-0.6.jar 81731
+    java -jar heapSpank-0.6.jar 8173
 
 Using data from [JAVA_HOME/bin/jmap -histo myPid](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr014.html#BABJIIHH), heapSpank shows the percentage of time that byte counts are on the rise for the 10 classes most likely to be leaking.
 
@@ -17,3 +17,9 @@ Using data from [JAVA_HOME/bin/jmap -histo myPid](https://docs.oracle.com/javase
 ## Limitations
 1. Only works with HotSpot JVM, because data is furnished by HotSpot's jmap -histo <myPid>
 2. Curretly does not support jmap's connection to remote JVMs....but please create an issue if that feature would be helpful.
+
+## Configuration
+Configuration file is not yet available and must be done in code.  Just add your configuration in a [subclass](https://github.com/eostermueller/heapSpank/blob/master/src/main/java/com/github/eostermueller/heapspank/leakyspank/console/FifteenSecondJMapHistoInterval.java) of [DefaultConfig](https://github.com/eostermueller/heapSpank/blob/master/src/main/java/com/github/eostermueller/heapspank/leakyspank/console/DefaultConfig.java) and pass the name of your subclass on the command line using the '-config' option.  All of this should be on one line:
+
+    java -jar heapSpank-0.6.jar 8173 -config com.github.eostermueller.heapspank.leakyspank.console.FifteenSecondJMapHistoInterval
+
