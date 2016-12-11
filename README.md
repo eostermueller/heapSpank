@@ -4,7 +4,7 @@ heapSpank detects memory leaks fast!  Just [download the jar](https://github.com
 
 Using data from [JAVA_HOME/bin/jmap -histo myPid](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr014.html#BABJIIHH), heapSpank shows the percentage of time that byte counts are on the rise for the 10 classes most likely to be leaking.
 
-![Quick Memory Leak Detection](https://cloud.githubusercontent.com/assets/175773/20299273/da86b044-aadf-11e6-98c9-0658af68ad85.png)
+![Quick Memory Leak Detection](https://cloud.githubusercontent.com/assets/175773/21078075/63990eb2-bf27-11e6-8b5e-5de636302fa6.png)
 
 
 
