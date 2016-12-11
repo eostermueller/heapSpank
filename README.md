@@ -30,5 +30,5 @@ Got questions or feedback?  Discuss heapSpank by sending email to forum at heapS
 
 ## Competition
 In case heapSpank is not quite what you were looking for, here are a few similar tools that do memory comparisons in search of memory leaks:
-* [This python script](http://alexpunnen.blogspot.com/2015/06/long-running-java-process-resource.html) compare two histogram dumps.
+* [This python script](http://alexpunnen.blogspot.com/2015/06/long-running-java-process-resource.html) compare two histogram (jmap -histo) dumps.
 * [Eclipse MAT](https://wiki.eclipse.org/MemoryAnalyzer) will compare two heap dumps.
