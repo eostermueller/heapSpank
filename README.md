@@ -1,4 +1,4 @@
-**Download the jar**: [link](https://github.com/eostermueller/heapSpank/releases/download/v0.7/heapSpank-0.7.jar)  MD5: c9c9220ba3d766cd02a6b64fb2f6e18c
+**Download the jar**: [link](https://github.com/eostermueller/heapSpank/releases/download/v0.7/heapSpank-0.7.jar) 
 **Forum**: [heapSpank@googlegroups.com](mailto:heapSpank@googlegroups.com)
 
 heapSpank detects Java memory leaks fast!  Just download the jar and point to the process id (pid) of a running JVM that you want to monitor for leaks.  Like this:
@@ -17,6 +17,7 @@ Using data from [JAVA_HOME/bin/jmap -histo myPid](https://docs.oracle.com/javase
 * Support for MS-Windows coming soon! Tested on Linux and MacOs with HotSpot JDK (JRE is not enough).
 * Small leaks, as well as large ones, are identified.
 * Do you run multi-hour tests to identify memory leak suspects?  No more!  heapSpank identifes leak suspects in just minutes.
+* MD5 for v0.7 jar download: c9c9220ba3d766cd02a6b64fb2f6e18c
 
 ## Limitations
 1. Only works with HotSpot JVM, because data is furnished by HotSpot's jmap -histo <myPid>
