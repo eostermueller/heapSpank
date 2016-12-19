@@ -16,6 +16,7 @@ Using data from [JAVA_HOME/bin/jmap -histo myPid](https://docs.oracle.com/javase
 * Small leaks, as well as large ones, are identified.
 * Do you run multi-hour tests to identify memory leak suspects?  No more!  heapSpank identifes leak suspects in just minutes.
 * MD5 for v0.7 jar download: c9c9220ba3d766cd02a6b64fb2f6e18c
+* Do you know someone who has expertise with the [IBM J9 JVM](http://www.ibm.com/developerworks/java/jdk/)?  Need help answering [this question on stackoverflow.com](http://stackoverflow.com/questions/41138610/programmatically-get-jmap-histo-data-from-ibm-j9) so heapSpank can support the J9.
 
 ## Limitations
 1. Only works with HotSpot JVM, because data is furnished by HotSpot's jmap -histo <myPid>
