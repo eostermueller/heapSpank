@@ -1,9 +1,9 @@
-**Download the jar**: [link](https://github.com/eostermueller/heapSpank/releases/download/v0.6/heapSpank-0.6.jar)  
+**Download the jar**: [link](https://github.com/eostermueller/heapSpank/releases/download/v0.7/heapSpank-0.7.jar)  
 **Forum**: [heapSpank@googlegroups.com](mailto:heapSpank@googlegroups.com)
 
 heapSpank detects Java memory leaks fast!  Just download the jar and point to the process id (pid) of a running JVM that you want to monitor for leaks.  Like this:
 
-    java -jar heapSpank-0.6.jar 8173
+    java -jar heapSpank-0.7.jar 8173
 
 Using data from [JAVA_HOME/bin/jmap -histo myPid](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr014.html#BABJIIHH), heapSpank shows the percentage of time that byte counts are on the rise for the 10 classes most likely to be leaking.
 
@@ -25,7 +25,7 @@ Using data from [JAVA_HOME/bin/jmap -histo myPid](https://docs.oracle.com/javase
 ## Configuration
 A configuration file is not yet available, so parameter tweaking must be done via code.  Just add your configuration in a [subclass](https://github.com/eostermueller/heapSpank/blob/master/src/main/java/com/github/eostermueller/heapspank/leakyspank/console/FifteenSecondJMapHistoInterval.java) of [DefaultConfig](https://github.com/eostermueller/heapSpank/blob/master/src/main/java/com/github/eostermueller/heapspank/leakyspank/console/DefaultConfig.java) and pass the name of your subclass on the command line using the '-config' option.  By default, jmap -histo is invoked every 5 seconds.  The following slows this down to every 15 seconds.
 
-    java -jar heapSpank-0.6.jar 8173 -config com.github.eostermueller.heapspank.leakyspank.console.FifteenSecondJMapHistoInterval
+    java -jar heapSpank-0.7.jar 8173 -config com.github.eostermueller.heapspank.leakyspank.console.FifteenSecondJMapHistoInterval
 
 ## Forum
 Got questions or feedback?  Discuss heapSpank by sending email to forum at heapSpank@googlegroups.com.  Forum history available [here](https://groups.google.com/forum/#!forum/heapspank).
