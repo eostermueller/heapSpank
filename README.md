@@ -1,4 +1,4 @@
-**Download the jar**: [link](https://github.com/eostermueller/heapSpank/releases/download/v0.7/heapSpank-0.7.jar)  
+**Download the jar**: [link](https://github.com/eostermueller/heapSpank/releases/download/v0.7/heapSpank-0.7.jar)  MD5: c9c9220ba3d766cd02a6b64fb2f6e18c
 **Forum**: [heapSpank@googlegroups.com](mailto:heapSpank@googlegroups.com)
 
 heapSpank detects Java memory leaks fast!  Just download the jar and point to the process id (pid) of a running JVM that you want to monitor for leaks.  Like this:
