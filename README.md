@@ -28,7 +28,7 @@ A configuration file is not yet available, so parameter tweaking must be done vi
     java -jar heapSpank-0.7.jar 8173 -config com.github.eostermueller.heapspank.leakyspank.console.FifteenSecondJMapHistoInterval
 
 ## Forum
-* Got questions or feedback?  Discuss heapSpank by sending email to forum at heapSpank@googlegroups.com.  
+* Send your questions/feedback to heapSpank@googlegroups.com for discussion.  
 * Forum history available [here](https://groups.google.com/forum/#!forum/heapspank).
 * To report a bug or ask for an enhancement [open an issue here](https://github.com/eostermueller/heapSpank/issues). 
 
