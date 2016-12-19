@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import com.github.eostermueller.heapspank.leakyspank.JMapHistoLine;
 import com.github.eostermueller.heapspank.leakyspank.LeakySpankContext;
+import com.github.eostermueller.heapspank.leakyspank.TheLeakiest;
 import com.github.eostermueller.heapspank.leakyspank.LeakySpankContext.LeakResult;
 import com.github.eostermueller.heapspank.leakyspank.Model;
 

@@ -13,7 +13,7 @@ public class TestCustomConfigClass {
 	@Test
 	public void test() throws CommandLineParameterException {
 
-		String args[] = { "-config", "com.github.eostermueller.heapspank.leakyspank.TestConfig" };
+		String args[] = { "-config", "com.github.eostermueller.heapspank.leakyspank.MyTestConfig" };
 		Config testConfig = DefaultConfig.createNew(args);
 		assertEquals("Could not load test configuration class from classpath", 99, testConfig.getScreenRefreshIntervalSeconds());	
 		

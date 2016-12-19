@@ -2,9 +2,8 @@ package com.github.eostermueller.heapspank.leakyspank;
 
 import static org.junit.Assert.*;
 
+import org.junit.Ignore;
 import org.junit.Test;
-
-import com.github.eostermueller.heapspank.leakyspank.jmeter.LeakySpankSampler;
 
 
 public class TestSingleJMapHistoLine {

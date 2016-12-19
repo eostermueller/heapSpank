@@ -4,6 +4,7 @@ import java.text.NumberFormat;
 import java.util.Queue;
 
 import com.github.eostermueller.heapspank.leakyspank.LeakySpankContext;
+import com.github.eostermueller.heapspank.leakyspank.TheLeakiest;
 import com.github.eostermueller.heapspank.leakyspank.LeakySpankContext.LeakResult;
 import com.github.eostermueller.heapspank.leakyspank.LeakySpankContext.WindowClosedEvent;
 import com.github.eostermueller.heapspank.leakyspank.Model;
@@ -22,7 +23,7 @@ public class DefaultView implements ConsoleView, EventListener {
 	private DisplayUpdateListener displayUpdateListener;
 
 	private static final String DATA_LINE_FORMAT = 
-			  "%4.1f%%"			//result.getPercentageOfRunsWithUpwardByteTrend() * 100,
+			  "%5.1f%%"			//result.getPercentageOfRunsWithUpwardByteTrend() * 100,
 			 +"  %4d"				//result.countRunsWithBytesIncrease,
 			 +"  %4d"				//this.getLeakySpankContext().getCurrentRunCount(),
 			 +"  %4d"				//result.countRunsWithInstanceCountIncrease,
@@ -43,7 +44,7 @@ public class DefaultView implements ConsoleView, EventListener {
 			 +" %7s"				//result.line.num,
 			 +" %s"				//result.line.className
 	 		 +"%n";	
-	static final String LEAKY_SPANK = "leakySpank: ";
+	static final String HEAP_SPANK = "heapSpank: ";
 			
 	
 	@Override
@@ -113,7 +114,7 @@ public class DefaultView implements ConsoleView, EventListener {
 	}
 
 	private void debug(String msg) {
-		System.out.println(DefaultView.LEAKY_SPANK+msg);
+		System.out.println(DefaultView.HEAP_SPANK+msg);
 	}
 	@Override
 	public void setLeakySpankContext(LeakySpankContext ctx) {

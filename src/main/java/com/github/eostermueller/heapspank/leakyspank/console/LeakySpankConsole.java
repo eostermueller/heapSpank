@@ -7,15 +7,21 @@ import java.io.PrintStream;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import com.github.eostermueller.heapspank.leakyspank.JvmAttachException;
 import com.github.eostermueller.heapspank.leakyspank.LeakySpankContext;
 import com.github.eostermueller.heapspank.leakyspank.Model;
+import com.github.eostermueller.heapspank.leakyspank.tools.JMapHisto;
+import com.github.eostermueller.heapspank.leakyspank.tools.JMapHistoException;
+import com.github.eostermueller.heapspank.leakyspank.tools.JMapHistoProcessWrapper;
+import com.github.eostermueller.heapspank.leakyspank.tools.ProcessIdDoesNotExist;
+import com.github.eostermueller.heapspank.leakyspank.tools.VirtualMachineWrapper;
 import com.github.eostermueller.heapspank.util.LimitedSizeQueue;
 
 public class LeakySpankConsole implements DisplayUpdateListener {
 
-	private static final String VERSION = "v0.6";
-	private static final String BANNER_FORMAT = "  %4ds   heapSpank memory leak detector version [%s]%n";
-	private static final String BANNER_FORMAT_ALT = "# %4ds   heapSpank memory leak detector version [%s] ##%n";
+	private static final String VERSION = "v0.7";
+	private static final String BANNER_FORMAT =     "  %4ds   heapSpank memory leak detector pid[%s] [%s]%n";
+	private static final String BANNER_FORMAT_ALT = "# %4ds   heapSpank memory leak detector pid[%s] [%s] ##%n";
 	private static final String INDENT = "\t";
 	Queue<Model> jmapHistoOutputQueue = new ConcurrentLinkedQueue<Model>();
 	JMapHistoRunner jMapHistoRunner = null;
@@ -28,14 +34,29 @@ public class LeakySpankConsole implements DisplayUpdateListener {
 	LimitedSizeQueue<String> debug = new LimitedSizeQueue<String>(10);
 
 	public static void main(String args[]) throws InstantiationException,
-			IllegalAccessException, ClassNotFoundException {
+			IllegalAccessException, ClassNotFoundException, JvmAttachException, JMapHistoException, ProcessIdDoesNotExist {
 		LeakySpankConsole leakySpankConsole = new LeakySpankConsole();
 		Config config;
 		try {
 			config = DefaultConfig.createNew(args);
 			if (config != null) {
 				leakySpankConsole.init(config);
-				leakySpankConsole.loopForever(leakySpankConsole.getConsoleView());
+				
+				if (config.runSelfTestAndExit()) {
+					try {
+						String jmapResult = leakySpankConsole.jMapHistoRunner.getJMapHisto().selfTest();
+						//show enough of the sample to convince user that jmap -histo data is flowing
+						if (jmapResult!=null) {
+							debug("Results [" + jmapResult.substring(0, 256) + "]");
+							debug("** JMap -histo successful / RESULTS TRUNCATED **");
+						} else {
+							debug("## JMap -histo ERROR ##");
+						}
+					} finally {
+						leakySpankConsole.jMapHistoRunner.shutdown();
+					}
+				} else
+					leakySpankConsole.loopForever(leakySpankConsole.getConsoleView());
 			} else {
 				System.out.println("Fatal error.  unable to create configuration.");
 				System.out.println( getUsage(args) );
@@ -51,10 +72,14 @@ public class LeakySpankConsole implements DisplayUpdateListener {
 		StringBuilder sb = new StringBuilder();
 		sb.append("\n");
 		sb.append("\n");
-		sb.append(INDENT + "------------------------------------------\n");
-		sb.append(INDENT + "Usage for heapSpank memory leak detection.\n");
+		sb.append(INDENT + "-----------------------------------------------\n");
+		sb.append(INDENT + "Usage for heapSpank Java memory leak detection.\n");
 		sb.append("\n");
 		sb.append(INDENT + INDENT + "java -jar heapSpank.jar <myPid>\n");
+		sb.append("\n");
+		sb.append(INDENT + "OR\n");
+		sb.append("\n");
+		sb.append(INDENT + INDENT + "java -jar heapSpank.jar <myPid> -selfTest\n");
 		sb.append("\n");
 		sb.append(INDENT + "OR\n");
 		sb.append("\n");
@@ -67,6 +92,8 @@ public class LeakySpankConsole implements DisplayUpdateListener {
 		sb.append("\n");
 		sb.append(INDENT + INDENT + "-- <myConfig> is the full package and class name of a your custom class \n");
 		sb.append(INDENT + INDENT + "       that implements com.github.eostermueller.heapspank.leakyspank.console.Config\n");
+		sb.append("\n");
+		sb.append(INDENT + INDENT + "-- The -selfTest parm will display troubleshooting info and immediately exist heapSpank.\n");
 		return sb.toString();
 	}
 
@@ -85,6 +112,7 @@ public class LeakySpankConsole implements DisplayUpdateListener {
 				printTopBar();
 				view.printView();
 				printDebug();
+				printExceptions();
 				System.out.flush();
 				if (iterations >= maxIterations_ && maxIterations_ > 0) {
 					break;
@@ -92,13 +120,20 @@ public class LeakySpankConsole implements DisplayUpdateListener {
 				view.sleep((int) (screenRefreshIntervalSeconds * 1000));
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	private void printExceptions() {
+
+		if (this.jMapHistoRunner.getFailedCount() > 0) {
+			System.out.println("jmap -histo exception count fpr pid [" + this.jMapHistoRunner.getJMapHisto().getPid() + "]: [" + this.jMapHistoRunner.getFailedCount() + "]");
+			System.out.println(this.jMapHistoRunner.getExceptionText());
+		}
+	}
+
 	private void printDebug() {
-		System.out.println("                    -- ===================================== --");
+		System.out.println("\n================================================================");
 		for(String item : this.debug ){
 		    System.out.println(item.toString());
 		}
@@ -119,45 +154,72 @@ public class LeakySpankConsole implements DisplayUpdateListener {
 		if (intSecondsUntilRefresh < 6) {
 
 			if (intSecondsUntilRefresh % 2 == 0)
-				System.out.format(BANNER_FORMAT, intSecondsUntilRefresh,
+				System.out.format(
+						BANNER_FORMAT, 
+						intSecondsUntilRefresh,
+						""+this.getLeakySpankContext().getPid(),
 						VERSION);
 			else
-				System.out.format(BANNER_FORMAT_ALT, intSecondsUntilRefresh,
+				System.out.format(
+						BANNER_FORMAT_ALT, 
+						intSecondsUntilRefresh,
+						""+this.getLeakySpankContext().getPid(),
 						VERSION);
-
 		} else
-			System.out.format(BANNER_FORMAT, intSecondsUntilRefresh, VERSION);
+			System.out.format(
+					BANNER_FORMAT, 
+					intSecondsUntilRefresh, 
+					""+this.getLeakySpankContext().getPid(),
+					VERSION);
 	}
 
-	private void init(Config config2) throws InstantiationException,
-			IllegalAccessException, ClassNotFoundException {
-		screenRefreshIntervalSeconds = config2
+	private void init(Config config) throws InstantiationException,
+			IllegalAccessException, ClassNotFoundException, JvmAttachException, JMapHistoException, ProcessIdDoesNotExist {
+		screenRefreshIntervalSeconds = config
 				.getScreenRefreshIntervalSeconds();
-		this.maxIterations_ = config2.getMaxIterations();
-		this.setLeakySpankContext(new LeakySpankContext(config2.getPid(),
-				config2.getjMapHistoIntervalSeconds(), 
-				config2.getjMapCountPerWindow(), 
-				config2.getSuspectCountPerWindow()));
+		this.maxIterations_ = config.getMaxIterations();
+		this.setLeakySpankContext(new LeakySpankContext(config.getPid(),
+				config.getjMapHistoIntervalSeconds(), 
+				config.getjMapCountPerWindow(), 
+				config.getSuspectCountPerWindow()));
 
 		this.getLeakySpankContext().setTopNSuspects(
-				config2.getSuspectCountPerWindow());
+				config.getSuspectCountPerWindow());
 		this.getLeakySpankContext().setDebugDisplayQueue(debug);
 
-		jMapHistoRunner = new JMapHistoRunner(config2.getPid(),
-				config2.getjMapHistoIntervalSeconds(),
-				this.jmapHistoOutputQueue);
+		JMapHisto histo = new VirtualMachineWrapper("" +config.getPid());
+		try {
+			histo.selfTest();
+		} catch (JMapHistoException e) {
+			debug("Attempting backup plan because VirtualMachineWrapper did not work. [" + e.getCause().getMessage() + "][" + e.getCause().getClass().getName() + "]");
+			histo = new JMapHistoProcessWrapper(""+config.getPid());
+			try {
+				histo.selfTest();
+			} catch (JMapHistoException e1) {
+				String error = "Giving up. Is JDK installed?  A JRE is not sufficent. Neither VirtualMachineWrapper nor JMapHistoProcessWrapper can execute jmap.  "; 
+				debug(error);
+				e1.setMessage(error);
+				throw e1;
+			}
+		}
+		
+		jMapHistoRunner = new JMapHistoRunner(histo,
+				config.getjMapHistoIntervalSeconds(),
+				this.jmapHistoOutputQueue, 
+				config.getClassNameExclusionFilter()
+				);
 
 		jMapHistoRunner.launchJMapHistoExecutor();
 
-		Class<ConsoleView> c = (Class<ConsoleView>) Class.forName(config2
+		Class<ConsoleView> c = (Class<ConsoleView>) Class.forName(config
 				.getViewClass());
 		ConsoleView view = c.newInstance();
 		view.setLeakySpankContext(this.getLeakySpankContext());
 		view.setDisplayUpdateListener((DisplayUpdateListener) this);
-		this.debug(String.format("just set context [%s] for view [%s]",
-				this.getLeakySpankContext(), view));
+		this.debug(String.format("just set view [%s]", view));
+		this.debug(String.format("just set context [%s]",this.getLeakySpankContext()));
 		this.setConsoleView(view);
-		setConfig(config2);
+		setConfig(config);
 	}
 
 	private void setConfig(Config config2) {
@@ -168,8 +230,8 @@ public class LeakySpankConsole implements DisplayUpdateListener {
 		return this.config;
 	}
 
-	private void debug(String msg) {
-		System.out.println(DefaultView.LEAKY_SPANK + msg);
+	private static void debug(String msg) {
+		System.out.println(DefaultView.HEAP_SPANK + msg);
 	}
 
 	/**

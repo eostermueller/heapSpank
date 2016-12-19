@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.github.eostermueller.heapspank.leakyspank.LeakySpankContext.LeakResult;
-import com.github.eostermueller.heapspank.leakyspank.console.TheLeakiest;
 import com.github.eostermueller.heapspank.util.BaseEvent;
 import com.github.eostermueller.heapspank.util.EventListener;
 import com.github.eostermueller.heapspank.util.LimitedSizeQueue;
@@ -21,7 +20,7 @@ public class LeakySpankContext {
 	public static class WindowClosedEvent extends BaseEvent {
 		
 	}
-	private static final String LEAKY_SPANK = "leakySpank: ";
+	private static final String HEAP_SPANK = "heapSpank: ";
 	private int currentRunCount  = 0;
 	private LimitedSizeQueue<String> debugDisplayQ;
 	public void incrementRunCount() {
@@ -109,9 +108,9 @@ public class LeakySpankContext {
 	}
 	
 	private void debug(String msg) {
-//		System.out.println(msg);
-//		if (this.getDebugDisplayQ()!=null)
-//			this.getDebugDisplayQ().offer(msg);
+		System.out.println(msg);
+		if (this.getDebugDisplayQ()!=null)
+			this.getDebugDisplayQ().offer(msg);
 	}
 	public List<LeakResult> getLeakSuspectsUnOrdered() {
 		Model mostRecent = this.recentJMapRuns.peekLast();//choose most recent run if the X runs in the window, because this is most up-to-date byte count.
@@ -156,10 +155,10 @@ public class LeakySpankContext {
 				
 				if (currentRunLine!=null && previousRunLine!=null) { //Not all classes show up in all JMapHisto outputs
 					currentRunLine.visitCount++;
-					this.debug(String.format("Visit count [%d] class [%s", currentRunLine.visitCount, currentRunLine.className));
+					//this.debug(String.format("Visit count [%d] class [%s", currentRunLine.visitCount, currentRunLine.className));
 
 					previousRunLine.visitCount++;
-					this.debug(String.format("PrevVisit count [%d] class [%s", previousRunLine.visitCount, previousRunLine.className));
+					//this.debug(String.format("PrevVisit count [%d] class [%s", previousRunLine.visitCount, previousRunLine.className));
 					
 					result.countRunsPresent++;
 					if ( currentRunLine.timestampNanos < previousRunLine.timestampNanos)

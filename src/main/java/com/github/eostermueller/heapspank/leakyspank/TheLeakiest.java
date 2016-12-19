@@ -1,4 +1,4 @@
-package com.github.eostermueller.heapspank.leakyspank.console;
+package com.github.eostermueller.heapspank.leakyspank;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.github.eostermueller.heapspank.leakyspank.LeakySpankContext;
 import com.github.eostermueller.heapspank.leakyspank.LeakySpankContext.LeakResult;
 
 public class TheLeakiest {

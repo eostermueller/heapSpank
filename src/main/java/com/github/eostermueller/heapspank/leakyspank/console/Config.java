@@ -2,6 +2,8 @@ package com.github.eostermueller.heapspank.leakyspank.console;
 
 import java.util.List;
 
+import com.github.eostermueller.heapspank.leakyspank.ClassNameFilter;
+
 public interface Config {
 
 	public abstract int getScreenRefreshIntervalSeconds();
@@ -30,5 +32,15 @@ public interface Config {
 	public abstract int getMaxIterations();
 
 	void setArgs(String[] args) throws CommandLineParameterException;
+
+	void setRunSelfTestAndExit(boolean runSelfTestOnly);
+
+	boolean runSelfTestAndExit();
+
+	public void setRegExExclusionFilter(String string);
+
+	public String getRegExExclusionFilter();
+
+	ClassNameFilter getClassNameExclusionFilter();
 
 }

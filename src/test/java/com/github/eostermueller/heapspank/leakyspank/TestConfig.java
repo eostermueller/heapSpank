@@ -1,85 +1,28 @@
 package com.github.eostermueller.heapspank.leakyspank;
 
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
 import com.github.eostermueller.heapspank.leakyspank.console.Config;
+import com.github.eostermueller.heapspank.leakyspank.console.DefaultConfig;
 
-public class TestConfig implements Config {
+public class TestConfig {
 
-	@Override
-	public int getScreenRefreshIntervalSeconds() {
-		// TODO Auto-generated method stub
-		return 99;
-	}
-
-	@Override
-	public void setScreenRefreshIntervalSeconds(int screenRefreshIntervalSeconds) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public int getjMapHistoIntervalSeconds() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setjMapHistoIntervalSeconds(int jMapHistoIntervalSeconds) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setjMapCountPerWindow(int jMapCountPerWindow) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public int getjMapCountPerWindow() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setSuspectCountPerWindow(int suspectCountPerWindow) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public int getSuspectCountPerWindow() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public long getPid() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setViewClass(String viewClass) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public String getViewClass() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int getMaxIterations() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setArgs(String[] args) {
-		// TODO Auto-generated method stub
-
+	@Test
+	public void testStartsWithExclusionFilter() {
+		Config c = new DefaultConfig();
+		
+		c.setRegExExclusionFilter("(java.lang.String|java.lang.Object)");
+		
+		ClassNameFilter filterItems = c.getClassNameExclusionFilter();
+		
+		
+		assertTrue( filterItems.accept("java.lang.String") );
+		assertTrue( filterItems.accept("java.lang.Object") );
+		assertFalse( filterItems.accept("bar") );
+		
+		
 	}
 
 }

@@ -13,31 +13,31 @@ import com.github.eostermueller.heapspank.leakyspank.LeakySpankContext.LeakResul
  */
 public class Model 
 {
-	private String[] startsWithExcludeFilter = null;
 	/**
 	 * There are a lot of extraneous classes in the jmap -histo output that get in the way of quick troubleshooting.
 	 * This list allows us to exclude certain java packages from the output.
 	 */
-	public static String[] DEFAULT_STARTSWITH_EXCLUDE_FILTER = {"[B","[C","[I","[Z","[D","[F","[J","[L","[S","java"};
+//	public static String[] DEFAULT_STARTSWITH_EXCLUDE_FILTER = {"[B","[C","[I","[Z","[D","[F","[J","[L","[S","java"};
+//	public static String[] DEFAULT_STARTSWITH_EXCLUDE_FILTER = {};
 	private Hashtable<String,JMapHistoLine> htAllClasses = new Hashtable<String,JMapHistoLine>(); //<JMapHistoLine>
 	private List<JMapHistoLine> alAllClasses = new ArrayList<JMapHistoLine>(); //<JMapHistoLine>
+	private ClassNameFilter classNameExclusionFilter;
 	
 	public JMapHistoLine[] getAll() {
 		return this.alAllClasses.toArray( new JMapHistoLine[0]);
 	}
 	
 	public Model() {
-		this.startsWithExcludeFilter  = DEFAULT_STARTSWITH_EXCLUDE_FILTER;
 	}
 	public Model(String jMapHistoStdout) {
-		this(jMapHistoStdout,DEFAULT_STARTSWITH_EXCLUDE_FILTER);
+		this(jMapHistoStdout,null);
 	}
 	public void add(LeakResult[] toAdd) {
 		for(LeakResult result : toAdd)
 			this.put(result.line);
 	}
-	public Model(String jMapHistoStdout, String[] startsWithExcludeFilter) {
-		this.startsWithExcludeFilter = startsWithExcludeFilter;
+	public Model(String jMapHistoStdout, ClassNameFilter classNameExclusionFilter) {
+		this.classNameExclusionFilter = classNameExclusionFilter;
 		
 		for (int i = 0; i < 4; i++)
 			jMapHistoStdout = jMapHistoStdout.replace("  "," ");  //Delimit columns using single space instead of multiple spaces.
@@ -48,13 +48,18 @@ public class Model
 			if (
 				   line.trim().length() > 0
 				&& line.indexOf("num #instances #bytes class name") < 0
-				&& line.indexOf("-------------------") < 0
+				&& line.indexOf("-------------------") < 0				
 				&& !line.startsWith("Total ") //Exclude this:  Total       6309950      429858384
 				) {
 				JMapHistoLine jMapHistoLine = new JMapHistoLine(line);
 				
+				boolean ynExclude = false;
+				if (this.classNameExclusionFilter!=null)
+					if (this.classNameExclusionFilter.accept(jMapHistoLine.className))
+						ynExclude = true;
 				
-				put(jMapHistoLine);
+				if (!ynExclude)
+					put(jMapHistoLine);
 			}
 		}
 	}
@@ -64,18 +69,16 @@ public class Model
 		
 	public void put(JMapHistoLine line) {
 		boolean ynExclude = false;
-		if (this.startsWithExcludeFilter!=null) {
-			for(String startsWithExclude : this.startsWithExcludeFilter)
-				if (line.className.startsWith(startsWithExclude)) {
-					ynExclude = true;
-					break;
-				}
-		}
+		
+		if (this.classNameExclusionFilter!=null)
+			if (this.classNameExclusionFilter.accept(line.className))
+				ynExclude = true;
 		
 		if (!ynExclude && !this.htAllClasses.containsKey(line.className)) {
 			this.htAllClasses.put(line.className, line);
 			this.alAllClasses.add(line);
 		}
+		
 	}
 	public JMapHistoLine[] getAllOrderByBytes() {
 		Collections.sort( this.alAllClasses, Model.BYTES_ORDER);
