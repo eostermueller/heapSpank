@@ -12,9 +12,7 @@ Using data from [JAVA_HOME/bin/jmap -histo myPid](https://docs.oracle.com/javase
 
 
 ## Notes
-* Make sure JAVA_HOME/bin is in your path, because heapSpank repeatedly calls jmap -histo under the covers, at 5 second intervals.  See configuration section below to change the interval.
 * For best results, warm up an application for a few minutes at 'steady state' before launching heapSpank.
-* Support for MS-Windows coming soon! Tested on Linux and MacOs with HotSpot JDK (JRE is not enough).
 * Small leaks, as well as large ones, are identified.
 * Do you run multi-hour tests to identify memory leak suspects?  No more!  heapSpank identifes leak suspects in just minutes.
 * MD5 for v0.7 jar download: c9c9220ba3d766cd02a6b64fb2f6e18c
