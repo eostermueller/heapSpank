@@ -33,6 +33,7 @@ There are two other options for configuration:
         
 ## Configuration File Precedence
 The following shows the order of precedence of the 4 configuration options:
+
 1. Java -D System Properties override all configuration.
 2. heapSpank.properties in same folder as heapSpank.jar
 3. heapSpank.properties in User's home dir.
