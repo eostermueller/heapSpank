@@ -22,8 +22,48 @@ Using data from [JAVA_HOME/bin/jmap -histo myPid](https://docs.oracle.com/javase
 1. Only works with HotSpot JVM, because data is furnished by HotSpot's jmap -histo <myPid>
 2. Curretly does not support jmap's connection to remote JVMs....but please create an issue if that feature would be helpful.
 
-## Configuration
-A configuration file is not yet available, so parameter tweaking must be done via code.  Just add your configuration in a [subclass](https://github.com/eostermueller/heapSpank/blob/master/src/main/java/com/github/eostermueller/heapspank/leakyspank/console/FifteenSecondJMapHistoInterval.java) of [DefaultConfig](https://github.com/eostermueller/heapSpank/blob/master/src/main/java/com/github/eostermueller/heapspank/leakyspank/console/DefaultConfig.java) and pass the name of your subclass on the command line using the '-config' option.  By default, jmap -histo is invoked every 5 seconds.  The following slows this down to every 15 seconds.
+## Configuration File
+To configure heapSpank, just create heapSpank.properties in the same folder as the heapSpank.jar file.
+There should be no need to change resources/heapSpank.properties inside the heapSpank.jar, where all the default values are stored.
+
+There are two other options for configuration:
+ * Create heapSpank.properties in your home directory, like "C:\Users\Betty\heapSpank.properties" or "/Users/Betty/heapSpank.properties".
+ * Pass in values as java system -D parameters, and override all values in config files.  Example:
+        java -D org.heapspank.jmap.histo.interval.seconds=30 -jar heapSpank-0.7.jar 8173
+
+ 
+## Configuration Variables
+    #The interval (in seconds) at which jmap -histo is invoked.
+    org.heapspank.jmap.histo.interval.seconds=5
+    
+    #If true, jmap -hiso is passed the '-live' parameter, 
+    #which forces a full GC with every jmap -histo run.
+    #Using true will identify leak suspects more quickly & accurately, but will incur extra GC overhead.  
+    org.heapspank.jmap.histo.live=false
+    
+    #A 'window' is a group of jmap -histo 'runs', and this parameter defines the number of runs per window.
+    #A larger value (more runs per window) provides results with higher confidence.
+    #A smaller value provides results quicker.
+    #See com.github.eostermueller.heapspank.leakyspank.LeakySpankContext for how this is used.
+    org.heapspank.jmap.histo.count.per.window=4
+    
+    #Count of the 'leakiest' classes promoted from each window 
+    #to an 'all time' list of leakest classes ever. 
+    org.heapspank.suspect.count.per.window=15
+    
+    #Count of rows in main display, 1 row per class.
+    org.heapspank.display.row.count=15
+    
+    org.heapspank.regex.exclusion.filter=
+    
+    org.heapspank.screen.refresh.interval.seconds=1
+    
+    org.heapspank.max.iterations=86000
+    
+    org.heapspank.view.class=com.github.eostermueller.heapspank.leakyspank.console.DefaultView
+
+## Advanced Configuration
+If the heapSpank.properties does not provide enough control for you, then just add your configuration in a [subclass](https://github.com/eostermueller/heapSpank/blob/master/src/main/java/com/github/eostermueller/heapspank/leakyspank/console/FifteenSecondJMapHistoInterval.java) of [DefaultConfig](https://github.com/eostermueller/heapSpank/blob/master/src/main/java/com/github/eostermueller/heapspank/leakyspank/console/DefaultConfig.java) and pass the name of your subclass on the command line using the '-config' option.  By default, jmap -histo is invoked every 5 seconds.  The following slows this down to every 15 seconds.
 
     java -jar heapSpank-0.7.jar 8173 -config com.github.eostermueller.heapspank.leakyspank.console.FifteenSecondJMapHistoInterval
 
