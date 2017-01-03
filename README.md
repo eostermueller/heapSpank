@@ -1,7 +1,7 @@
 **Download the executable jar**: [link](https://github.com/eostermueller/heapSpank/releases/download/v0.7/heapSpank-0.7.jar)  
 **Forum**: [heapSpank@googlegroups.com](mailto:heapSpank@googlegroups.com)
 
-heapSpank detects Java memory leaks fast!  Just download the jar and point to the process id (pid) of a running JVM that you want to monitor for leaks.  Like this:
+heapSpank detects Java memory leaks fast!  Just download the jar and point to the process id (pid) of a running JVM that you want to monitor for leaks.  It is easy! Like this:
 
     java -jar heapSpank-0.7.jar 8173
 
@@ -30,7 +30,7 @@ There are two other options for configuration:
  * Create heapSpank.properties in your home directory, like "C:\Users\Betty\heapSpank.properties" or "/Users/Betty/heapSpank.properties".
  * Pass in values as java system -D parameters, and override all values in config files.  Example:
  
-        java -D org.heapspank.jmap.histo.interval.seconds=30 -jar heapSpank-0.7.jar 8173
+        java -Dorg.heapspank.jmap.histo.interval.seconds=30 -jar heapSpank-0.7.jar 8173
         
 ## Configuration File Precedence
 The following shows the order of precedence of the 4 configuration options:
