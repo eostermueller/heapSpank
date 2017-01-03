@@ -38,7 +38,9 @@ The following shows the order of precedence of the 4 configuration options:
 1. Java -D System Properties override all configuration.
 2. heapSpank.properties in same folder as heapSpank.jar
 3. heapSpank.properties in User's home dir.
-4. heapSpank.properties file in heapSpank.jar files provides defaults for all variables.
+4. heapSpank.properties file in heapSpank.jar file provides defaults for all variables.
+ 
+ As an example, a variable like "org.heapspank.jmap.histo.live=true" in heapSpank.properties in same folder as heapSpank.jar will override the value of that same variable both in your heapSpank.properties in your home dir and in heapSpank.properties in the heapSpank.jar file.
  
 ## Configuration Variables
     #The interval (in seconds) at which jmap -histo is invoked.
