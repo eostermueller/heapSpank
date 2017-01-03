@@ -30,6 +30,7 @@ There are two other options for configuration:
  * Create heapSpank.properties in your home directory, like "C:\Users\Betty\heapSpank.properties" or "/Users/Betty/heapSpank.properties".
  * Pass in values as java system -D parameters, and override all values in config files.  Example:
         java -D org.heapspank.jmap.histo.interval.seconds=30 -jar heapSpank-0.7.jar 8173
+        
 ## Configuration File Precedence
 The following shows the order of precedence of the 4 configuration options:
 1. Java -D System Properties override all configuration.
