@@ -24,13 +24,18 @@ Using data from [JAVA_HOME/bin/jmap -histo myPid](https://docs.oracle.com/javase
 
 ## Configuration File
 To configure heapSpank, just create heapSpank.properties in the same folder as the heapSpank.jar file.
-There should be no need to change resources/heapSpank.properties inside the heapSpank.jar, where all the default values are stored.
+There should be no need to change heapSpank.properties inside the heapSpank.jar, where all the default values are stored.
 
 There are two other options for configuration:
  * Create heapSpank.properties in your home directory, like "C:\Users\Betty\heapSpank.properties" or "/Users/Betty/heapSpank.properties".
  * Pass in values as java system -D parameters, and override all values in config files.  Example:
         java -D org.heapspank.jmap.histo.interval.seconds=30 -jar heapSpank-0.7.jar 8173
-
+## Configuration File Precedence
+The following shows the order of precedence of the 4 configuration options:
+1. Java -D System Properties override all configuration.
+2. heapSpank.properties in same folder as heapSpank.jar
+3. heapSpank.properties in User's home dir.
+4. heapSpank.properties file in heapSpank.jar files provides defaults for all variables.
  
 ## Configuration Variables
     #The interval (in seconds) at which jmap -histo is invoked.
