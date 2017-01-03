@@ -44,7 +44,7 @@ The following shows the order of precedence of the 4 configuration options:
     #The interval (in seconds) at which jmap -histo is invoked.
     org.heapspank.jmap.histo.interval.seconds=5
     
-    #If true, jmap -hiso is passed the '-live' parameter, 
+    #If true, jmap -histo is passed the '-live' parameter, 
     #which forces a full GC with every jmap -histo run.
     #Using true will identify leak suspects more quickly & accurately, but will incur extra GC overhead.  
     org.heapspank.jmap.histo.live=false
