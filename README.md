@@ -1,9 +1,9 @@
-**Download the executable jar**: [link](https://github.com/eostermueller/heapSpank/releases/download/v0.7/heapSpank-0.7.jar)  
+**Download the executable jar**: [link](https://github.com/eostermueller/heapSpank/releases/download/v0.8/heapSpank-0.8.jar)  
 **Forum**: [heapSpank@googlegroups.com](mailto:heapSpank@googlegroups.com)
 
 heapSpank detects Java memory leaks fast!  Just download the jar and point to the process id (pid) of a running JVM that you want to monitor for leaks.  It is easy! Like this:
 
-    java -jar heapSpank-0.7.jar 8173
+    java -jar heapSpank-0.8.jar 8173
 
 Using data from [JAVA_HOME/bin/jmap -histo myPid](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr014.html#BABJIIHH), heapSpank shows the percentage of time that byte counts are on the rise for the 10 classes most likely to be leaking.
 
@@ -15,7 +15,7 @@ Using data from [JAVA_HOME/bin/jmap -histo myPid](https://docs.oracle.com/javase
 * For best results, warm up an application for a few minutes at 'steady state' before launching heapSpank.
 * Small leaks, as well as large ones, are identified.
 * Do you run multi-hour tests to identify memory leak suspects?  No more!  heapSpank identifes leak suspects in just minutes.
-* MD5 for v0.7 jar download: c9c9220ba3d766cd02a6b64fb2f6e18c
+* MD5 (heapSpank-0.8.jar) = 837f251eea760c11496cf03b65e7f58a
 * Do you know someone who has expertise with the [IBM J9 JVM](http://www.ibm.com/developerworks/java/jdk/)?  Need help answering [this question on stackoverflow.com](http://stackoverflow.com/questions/41138610/programmatically-get-jmap-histo-data-from-ibm-j9) so heapSpank can support the J9.
 
 ## Limitations
@@ -30,7 +30,7 @@ There are two other options for configuration:
  * Create heapSpank.properties in your home directory, like "C:\Users\Betty\heapSpank.properties" or "/Users/Betty/heapSpank.properties".
  * Pass in values as java system -D parameters, and override all values in config files.  Example:
  
-        java -Dorg.heapspank.jmap.histo.interval.seconds=30 -jar heapSpank-0.7.jar 8173
+        java -Dorg.heapspank.jmap.histo.interval.seconds=30 -jar heapSpank-0.8.jar 8173
         
 ## Configuration File Precedence
 The following shows the order of precedence of the 4 configuration options:
@@ -75,7 +75,7 @@ The following shows the order of precedence of the 4 configuration options:
 ## Advanced Configuration
 If the heapSpank.properties does not provide enough control for you, then just add your configuration in a [subclass](https://github.com/eostermueller/heapSpank/blob/master/src/main/java/com/github/eostermueller/heapspank/leakyspank/console/FifteenSecondJMapHistoInterval.java) of [DefaultConfig](https://github.com/eostermueller/heapSpank/blob/master/src/main/java/com/github/eostermueller/heapspank/leakyspank/console/DefaultConfig.java) and pass the name of your subclass on the command line using the '-config' option.  By default, jmap -histo is invoked every 5 seconds.  The following slows this down to every 15 seconds.
 
-    java -jar heapSpank-0.7.jar 8173 -config com.github.eostermueller.heapspank.leakyspank.console.FifteenSecondJMapHistoInterval
+    java -jar heapSpank-0.8.jar 8173 -config com.github.eostermueller.heapspank.leakyspank.console.FifteenSecondJMapHistoInterval
 
 ## Forum
 * Send your questions/feedback to heapSpank@googlegroups.com for discussion.  
