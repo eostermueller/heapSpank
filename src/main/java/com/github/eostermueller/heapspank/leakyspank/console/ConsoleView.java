@@ -9,6 +9,7 @@ import com.github.eostermueller.heapspank.leakyspank.LeakySpankContext;
  */
 public interface ConsoleView
 {
+  public void init();
   /**
    * Prints the view to STDOUT.
    *
@@ -35,9 +36,11 @@ public interface ConsoleView
   
   public void setLeakySpankContext(LeakySpankContext ctx);
 
-LeakySpankContext getLeakySpankContext();
-
-public void setDisplayUpdateListener(DisplayUpdateListener displayUpdateListener);
-
-public DisplayUpdateListener getDisplayUpdateListener();
+	LeakySpankContext getLeakySpankContext();
+	
+	public void setDisplayUpdateListener(DisplayUpdateListener displayUpdateListener);
+	
+	public DisplayUpdateListener getDisplayUpdateListener();
+	public int getDisplayRowCount();
+	public void setDisplayRowCount(int rows);
 }

@@ -1,11 +1,17 @@
 package com.github.eostermueller.heapspank.leakyspank.console;
 
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import org.apache.commons.configuration2.ex.ConfigurationException;
 
 import com.github.eostermueller.heapspank.leakyspank.JvmAttachException;
 import com.github.eostermueller.heapspank.leakyspank.LeakySpankContext;
@@ -19,7 +25,7 @@ import com.github.eostermueller.heapspank.util.LimitedSizeQueue;
 
 public class LeakySpankConsole implements DisplayUpdateListener {
 
-	private static final String VERSION = "v0.7";
+	private static final String VERSION = "v0.8";
 	private static final String BANNER_FORMAT =     "  %4ds   heapSpank memory leak detector pid[%s] [%s]%n";
 	private static final String BANNER_FORMAT_ALT = "# %4ds   heapSpank memory leak detector pid[%s] [%s] ##%n";
 	private static final String INDENT = "\t";
@@ -34,11 +40,17 @@ public class LeakySpankConsole implements DisplayUpdateListener {
 	LimitedSizeQueue<String> debug = new LimitedSizeQueue<String>(10);
 
 	public static void main(String args[]) throws InstantiationException,
-			IllegalAccessException, ClassNotFoundException, JvmAttachException, JMapHistoException, ProcessIdDoesNotExist {
+			IllegalAccessException, ClassNotFoundException, JvmAttachException, JMapHistoException, ProcessIdDoesNotExist, MultiPropertyException, CommandLineParameterException {
 		LeakySpankConsole leakySpankConsole = new LeakySpankConsole();
 		Config config;
 		try {
-			config = DefaultConfig.createNew(args);
+			ConfigFactory factory = new ConfigFactory();
+			
+			//JUnit tests should never use this.
+			//We don't want haphazardly placed property files altering junit test behavior.
+			factory.setDefaultConfigClass(ConfigFactory.APACHE_CONFIG_IMPL);
+			
+			config = factory.createNew(args);
 			if (config != null) {
 				leakySpankConsole.init(config);
 				
@@ -61,7 +73,14 @@ public class LeakySpankConsole implements DisplayUpdateListener {
 				System.out.println("Fatal error.  unable to create configuration.");
 				System.out.println( getUsage(args) );
 			}
-		} catch (CommandLineParameterException e) {
+		} catch (Exception e) {
+			if (e instanceof org.apache.commons.configuration2.ex.ConfigurationException) {
+				ConfigurationException ce = (ConfigurationException)e;
+				if (e.getMessage().contains("Could not locate")) {
+					
+				}
+			}
+			e.printStackTrace();
 			System.out.println("\n");
 			System.out.println(e.getMessage());
 			System.out.println( getUsage(args) );
@@ -103,7 +122,10 @@ public class LeakySpankConsole implements DisplayUpdateListener {
 			System.setOut(new PrintStream(new BufferedOutputStream(
 					new FileOutputStream(FileDescriptor.out)), false));
 			int iterations = 0;
-			while (!view.shouldExit()) {
+			
+			while (!view.shouldExit() &&
+					(jMapHistoRunner.failedExecutionCount.intValue() <=0) 
+					) {
 				clearConsole();
 
 				Model m = this.jmapHistoOutputQueue.poll();
@@ -118,9 +140,22 @@ public class LeakySpankConsole implements DisplayUpdateListener {
 					break;
 				}
 				view.sleep((int) (screenRefreshIntervalSeconds * 1000));
+				
+				
+					
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if (jMapHistoRunner.failedExecutionCount.intValue()>0) {
+				DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL, Locale.getDefault() );
+
+				String date = dateFormat.format(new Date());
+				System.err.println("Process ID [" + this.getConfig().getPid() + "] died at [" + date + "!");
+								
+			}
+			
+			jMapHistoRunner.shutdown();
 		}
 	}
 
@@ -203,10 +238,12 @@ public class LeakySpankConsole implements DisplayUpdateListener {
 			}
 		}
 		
-		jMapHistoRunner = new JMapHistoRunner(histo,
+		jMapHistoRunner = new JMapHistoRunner(
+				histo,
 				config.getjMapHistoIntervalSeconds(),
 				this.jmapHistoOutputQueue, 
-				config.getClassNameExclusionFilter()
+				config.getClassNameExclusionFilter(),
+				config.getJMapHistoLive()
 				);
 
 		jMapHistoRunner.launchJMapHistoExecutor();
@@ -214,8 +251,10 @@ public class LeakySpankConsole implements DisplayUpdateListener {
 		Class<ConsoleView> c = (Class<ConsoleView>) Class.forName(config
 				.getViewClass());
 		ConsoleView view = c.newInstance();
+		view.setDisplayRowCount(config.getDisplayRowCount());
 		view.setLeakySpankContext(this.getLeakySpankContext());
 		view.setDisplayUpdateListener((DisplayUpdateListener) this);
+		view.init();
 		this.debug(String.format("just set view [%s]", view));
 		this.debug(String.format("just set context [%s]",this.getLeakySpankContext()));
 		this.setConsoleView(view);

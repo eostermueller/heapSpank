@@ -7,10 +7,11 @@ import com.github.eostermueller.heapspank.leakyspank.ClassNameFilter;
 
 
 public class DefaultConfig implements Config {
-	private static final String DEFAULT_CONFIG_IMPL = "com.github.eostermueller.heapspank.leakyspank.console.DefaultConfig";
+	private boolean jmapHistoLive = false;
 	private static final Object PARM_SELF_TEST = "-selfTest";
 	private static final String HEAP_SPANK = "heapSpank: ";
 	private ClassNameFilter classNameFilter = null;
+	int displayRowCount = 10;
 	
 	@Override 
 	public ClassNameFilter getClassNameExclusionFilter() {
@@ -100,59 +101,10 @@ public class DefaultConfig implements Config {
 	public void setPid(long pid) {
 		this.pid = pid;
 	}
-	/**
-	 * Create a new instance of com.github.eostermueller.heapspank.leakyspank.console.Config 
-	 * @param args
-	 * @return
-	 * @throws CommandLineParameterException
-	 */
-	public static Config createNew(String[] args) throws CommandLineParameterException {
-		Config rc = null;
-		String proposedNameOfConfigClass = getConfigClassName(args);
-		Object configInstance = null;
-		
-		debug("Attempting to load config class [" + proposedNameOfConfigClass + "]");
-		try {
-			Class c = Class.forName(proposedNameOfConfigClass);
-			configInstance = c.newInstance();
-		} catch (Exception e) {
-			CommandLineParameterException x = new CommandLineParameterException("Unable to create [" + proposedNameOfConfigClass + "].  Not in the classpath?", e);
-			x.setProposedConfigClassName(proposedNameOfConfigClass);
-			throw x;
-		}
-		
-		if (Config.class.isInstance(configInstance)) {
-			rc = (Config) configInstance;
-			rc.setArgs(args);
-		} else {
-			CommandLineParameterException x = new CommandLineParameterException("The -config class [" + proposedNameOfConfigClass + "] must implement com.github.eostermueller.heapspank.leakyspank.console.Config");
-			x.setProposedConfigClassName(proposedNameOfConfigClass);
-			throw x;
-		}
-		
-		debug("loaded config [" + rc.toString() + "]");
-		return rc;
-	}
+	
 	private static void debug(String string) {
 		System.out.println(HEAP_SPANK + string);
 		
-	}
-	private static String getConfigClassName(String[] args) throws CommandLineParameterException {
-		String rc = null;
-		for(int i = 0; i < args.length; i++) {
-			if (args[i].equals("-config")) {
-				if ( i+1 < args.length)
-					rc = args[i+1];
-				else {
-					CommandLineParameterException x = new CommandLineParameterException("parameter after -config must be name of a class that implements com.github.eostermueller.heapspank.leakyspank.console.Config");
-					x.setProposedConfigClassName(null);
-					throw x;
-				}
-			}
-		}
-		if (rc==null)
-			rc = DEFAULT_CONFIG_IMPL;
-		return rc;
 	}
 	@Override
 	public void setArgs(String[] args) throws CommandLineParameterException {
@@ -199,5 +151,25 @@ public class DefaultConfig implements Config {
 	@Override
 	public int getMaxIterations() {
 		return 86000;
+	}
+
+	@Override
+	public int getDisplayRowCount() {
+		return displayRowCount;
+	}
+
+	@Override
+	public void setDisplayRowCount(int rows) {
+		displayRowCount = rows;
+	}
+
+	@Override
+	public boolean getJMapHistoLive() {
+		return jmapHistoLive;
+	}
+
+	@Override
+	public void setJMapHistoLive(boolean b) {
+		jmapHistoLive = b;
 	}
 }

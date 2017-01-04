@@ -32,6 +32,13 @@ public class JMapHistoRunner implements Runnable {
 	
 	int intervalInSeconds = -2;
 	private Queue<Model> outputQueue = null;
+	private boolean jmapHistoLive;
+	public boolean getJMapHistoLive() {
+		return jmapHistoLive;
+	}
+	public void setJMapHistoLive(boolean b) {
+		jmapHistoLive = b;
+	}
 
 	
 	public String getExceptionText() {
@@ -50,7 +57,12 @@ public class JMapHistoRunner implements Runnable {
 	public long getFailedCount() {
 		return this.failedExecutionCount.longValue();
 	}
-	public JMapHistoRunner(JMapHisto jmapHisto, int intervalInSeconds, Queue<Model> outputQueue, ClassNameFilter classNameFilter) throws JvmAttachException {
+	public JMapHistoRunner(
+			JMapHisto jmapHisto, 
+			int intervalInSeconds, 
+			Queue<Model> outputQueue, 
+			ClassNameFilter classNameFilter, 
+			boolean jmapHistoLive) throws JvmAttachException {
 		
 		this.classNameExclusionFilter = classNameFilter;
 		this.setJMapHisto(jmapHisto);
@@ -61,6 +73,8 @@ public class JMapHistoRunner implements Runnable {
 				"leakySpankJMapHistoThread");
 		this.jmapHistoScheduler = Executors.newScheduledThreadPool(1,
 				threadFactory);
+		
+		this.setJMapHistoLive(jmapHistoLive);
 	}
 
 	public void shutdown() {
@@ -95,7 +109,7 @@ public class JMapHistoRunner implements Runnable {
 			 * 
 			 */
 			
-			String histo = this.getJMapHisto().heapHisto(true);
+			String histo = this.getJMapHisto().heapHisto( this.getJMapHistoLive() );
 
         	Model m = new Model(histo, this.classNameExclusionFilter);
 			this.outputQueue.add(m);

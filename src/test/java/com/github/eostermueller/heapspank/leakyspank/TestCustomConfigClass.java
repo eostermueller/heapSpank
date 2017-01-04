@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import com.github.eostermueller.heapspank.leakyspank.console.CommandLineParameterException;
 import com.github.eostermueller.heapspank.leakyspank.console.Config;
-import com.github.eostermueller.heapspank.leakyspank.console.DefaultConfig;
+import com.github.eostermueller.heapspank.leakyspank.console.ConfigFactory;
 
 public class TestCustomConfigClass {
 
@@ -14,7 +14,7 @@ public class TestCustomConfigClass {
 	public void test() throws CommandLineParameterException {
 
 		String args[] = { "-config", "com.github.eostermueller.heapspank.leakyspank.MyTestConfig" };
-		Config testConfig = DefaultConfig.createNew(args);
+		Config testConfig = new ConfigFactory().createNew(args);
 		assertEquals("Could not load test configuration class from classpath", 99, testConfig.getScreenRefreshIntervalSeconds());	
 		
 	}
@@ -30,7 +30,7 @@ public class TestCustomConfigClass {
 		
 		
 		try {
-			DefaultConfig.createNew(args);
+			new ConfigFactory().createNew(args);
 			fail("Should have thrown an exception because the class name after -config parm does not exist.");
 		} catch (CommandLineParameterException e) {
 			assertEquals( 
@@ -52,7 +52,7 @@ public class TestCustomConfigClass {
 		
 		Config testConfig;
 		try {
-			testConfig = DefaultConfig.createNew(args);
+			testConfig = new ConfigFactory().createNew(args);
 			fail("Should have thrown an exception because the class was missing as a command line argument.");
 		} catch (CommandLineParameterException e) {
 			assertEquals( 
@@ -74,7 +74,7 @@ public class TestCustomConfigClass {
 				};
 		
 		try {
-			Config testConfig = DefaultConfig.createNew(args);
+			Config testConfig = new ConfigFactory().createNew(args);
 			fail("Should have thrown an exception because the class name after -config parm does not exist.");
 		} catch (CommandLineParameterException e) {
 			assertEquals( 

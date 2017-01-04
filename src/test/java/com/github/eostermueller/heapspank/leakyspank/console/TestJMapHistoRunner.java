@@ -34,7 +34,7 @@ public class TestJMapHistoRunner {
 			jmapHistoRunner = new JMapHistoRunner(
 							histo,
 							1,
-							outputQueue, null);
+							outputQueue, null, false);
 			
 			jmapHistoRunner.launchJMapHistoExecutor();
 			Thread.sleep(5000);

@@ -5,6 +5,7 @@ import java.util.List;
 import com.github.eostermueller.heapspank.leakyspank.ClassNameFilter;
 
 public interface Config {
+	public static final String DEFAULT_FILE_NAME = "heapSpank.properties";
 
 	public abstract int getScreenRefreshIntervalSeconds();
 
@@ -42,5 +43,9 @@ public interface Config {
 	public String getRegExExclusionFilter();
 
 	ClassNameFilter getClassNameExclusionFilter();
-
+	
+	public int getDisplayRowCount();
+	public void setDisplayRowCount(int rows);
+	public boolean getJMapHistoLive();
+	public void setJMapHistoLive(boolean b);
 }

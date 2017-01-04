@@ -22,10 +22,10 @@ public class TheLeakiest {
 //	public void setTheLeakiest(Map<String, LeakResult> theLeakiest) {
 //		this.theLeakiestMap = theLeakiest;
 //	}
-	private int topX = 10;
+	private int displayRowCount = 10;
 
-	public TheLeakiest(int topX) {
-		this.topX = topX;
+	public TheLeakiest(int val) {
+		this.displayRowCount = val;
 	}
 	public LeakResult get(String key) {
 		return this.theLeakiestMap.get(key);
@@ -46,13 +46,13 @@ public class TheLeakiest {
 		for(LeakResult oneToAdd : results)
 			this.addLeakResult(oneToAdd);
 		/**
-		 * The new items might have pushed us over our limit (topX).
+		 * The new items might have pushed us over our limit (getDisplayRowCount()).
 		 * So, sort the newly updated list and remove everything 
-		 * past the topX.
+		 * past the getDisplayRowCount().
 		 */
 		sortAndPrune();
 	}
-	/** If we've added more than the topX size parameter,
+	/** If we've added more than the getDisplayRowCount() size parameter,
 	 * discover which ones need to be deleted by sorting and
 	 * removing 
 	 */
@@ -61,7 +61,7 @@ public class TheLeakiest {
 		Collections.sort( this.theLeakiestList, LeakySpankContext.PCT_OF_RUNS_WITH_UPWARD_TRENDING_BYTES );
 		
 		for(int i = this.theLeakiestList.size()-1;
-				i > this.topX-1;
+				i > this.getDisplayRowCount()-1;
 				i--) {
 			this.theLeakiestMap.remove(this.theLeakiestList.get(i).line.className);
 			this.theLeakiestList.remove(i);
@@ -71,4 +71,11 @@ public class TheLeakiest {
 	public LeakResult[] getTopResults() {
 		return this.theLeakiestList.toArray( new LeakResult[]{});
 	}	
+	public int getDisplayRowCount() {
+		return this.displayRowCount; 
+	}
+	public void setDisplayRowCount(int rows) {
+		this.displayRowCount = rows;
+	}
+	
 }

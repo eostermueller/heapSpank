@@ -6,7 +6,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
   <groupId>com.github.eostermueller.heapspank</groupId>
   <artifactId>heapSpank</artifactId>
   <packaging>jar</packaging>
-  <version>0.7</version>
+  <version>0.8</version>
   <name>heapSpank</name>
   <url>http://maven.apache.org</url>
   <properties>
@@ -112,6 +112,18 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
   </profiles>
   -->
   <dependencies>
+	<dependency>
+	  <groupId>org.apache.commons</groupId>
+	  <artifactId>commons-configuration2</artifactId>
+	  <version>2.1</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
+	<dependency>
+	    <groupId>commons-beanutils</groupId>
+	    <artifactId>commons-beanutils</artifactId>
+	    <version>1.9.3</version>
+	</dependency>
+	    
     <!-- https://mvnrepository.com/artifact/junit/junit -->
     <dependency>
       <groupId>junit</groupId>

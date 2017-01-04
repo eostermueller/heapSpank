@@ -1,21 +1,28 @@
 package com.github.eostermueller.heapspank.leakyspank.console;
 
 import java.text.NumberFormat;
-import java.util.Queue;
 
 import com.github.eostermueller.heapspank.leakyspank.LeakySpankContext;
 import com.github.eostermueller.heapspank.leakyspank.TheLeakiest;
 import com.github.eostermueller.heapspank.leakyspank.LeakySpankContext.LeakResult;
 import com.github.eostermueller.heapspank.leakyspank.LeakySpankContext.WindowClosedEvent;
-import com.github.eostermueller.heapspank.leakyspank.Model;
 import com.github.eostermueller.heapspank.util.BaseEvent;
 import com.github.eostermueller.heapspank.util.EventListener;
 
+/**
+ * The init() will be called after setDisplayRowCount().
+ * @author erikostermueller
+ *
+ */
 public class DefaultView implements ConsoleView, EventListener {
-	public DefaultView() {
-		this.theLeakiest = new TheLeakiest(10);
-		
-		
+	int displayRowCount = -1;
+	@Override
+	public int getDisplayRowCount() {
+		return this.displayRowCount;
+	}
+	@Override
+	public void setDisplayRowCount(int rows) {
+		this.displayRowCount = rows;
 	}
 	LeakySpankContext leakySpankContext = null;
 	TheLeakiest theLeakiest = null;
@@ -50,8 +57,8 @@ public class DefaultView implements ConsoleView, EventListener {
 	@Override
 	public void printView() throws Exception {
 		
-		LeakySpankContext ctx = this.getLeakySpankContext();
-		
+//		LeakySpankContext ctx = this.getLeakySpankContext();
+//		
 		displayHeader();
 		
 		System.out.print(this.getMultiLineDisplayData());
@@ -67,10 +74,10 @@ public class DefaultView implements ConsoleView, EventListener {
 		
 		System.out.format(this.getFormatForHeader(), 
 				"LKY%",
-				"(B-INC",
-				"(JMH",
-				"(I-INC",
-				"(R-INC",
+				"#B-INC",
+				"#JMH",
+				"#I-INC",
+				"#R-INC",
 				"BYTES",
 				"INSTANCES",
 				"NUM",
@@ -149,5 +156,9 @@ public class DefaultView implements ConsoleView, EventListener {
 			this.displayUpdateListener.updated();
 		}
 		
+	}
+	@Override
+	public void init() {
+		this.theLeakiest = new TheLeakiest(this.getDisplayRowCount());
 	}
 }
