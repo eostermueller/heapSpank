@@ -10,7 +10,7 @@ locale                   : "en"
 title                    : "heapSpank"
 title_separator          : "-"
 name                     : "Erik Ostermueller"
-description              : "Find memory leaks in minutes."
+description              : "Command line utility that locates Java memory leaks quickly." #phrase for SEO, not humans.
 url                      : https://eostermueller.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : /heapSpank # the subpath of your site, e.g. "/blog"
 repository               : eostermueller/heapSpank # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
