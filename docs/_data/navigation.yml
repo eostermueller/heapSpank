@@ -1,7 +1,5 @@
 # main links
 main:
-  - title: "Quick Start Guide"
-    url: https://github.com/eostermueller/heapSpank
   - title: "Configuration"
     url: https://github.com/eostermueller/heapSpank
   - title: "Leak Examples"
