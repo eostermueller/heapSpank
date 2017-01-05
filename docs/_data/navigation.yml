@@ -2,11 +2,11 @@
 main:
   - title: "Quick Start Guide"
     url: https://github.com/eostermueller/heapSpank
-  # - title: "About"
-  #   url: https://mmistakes.github.io/minimal-mistakes/about/
-  # - title: "Sample Posts"
-  #   url: /year-archive/
-  # - title: "Sample Collections"
-  #   url: /collection-archive/
+   - title: "Configuration"
+      url: https://github.com/eostermueller/heapSpank
+    - title: "Leak Examples"
+      url: https://github.com/eostermueller/heapSpank
+    - title: "Road Map"
+      url: https://github.com/eostermueller/heapSpank
   # - title: "Sitemap"
   #   url: /sitemap/
