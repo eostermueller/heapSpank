@@ -9,13 +9,13 @@
 locale                   : "en"
 title                    : "heapSpank"
 title_separator          : "-"
-name                     : "Erik Ostermueller"
+name                     : ""
 description              : "Command line utility that locates Java memory leaks quickly." #phrase for SEO, not humans.
 url                      : https://eostermueller.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : /heapSpank # the subpath of your site, e.g. "/blog"
 repository               : eostermueller/heapSpank # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
-# breadcrumbs            : false # true, false (default)
+# breadcrumbs            : true # true, false (default)
 words_per_minute         : 200
 comments:
   provider               : # false (default), "disqus", "discourse", "facebook", "google-plus", "staticman", "custom"
@@ -77,9 +77,9 @@ analytics:
 
 # Site Author
 author:
-  name             : "Erik Ostermueller"
+  name             : ""
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "Java Architect / Performance Engineer"
+  bio              : ""
   location         : "Little Rock, Arkansas"
   email            :
   uri              :
