@@ -20,7 +20,7 @@ heapSpank detects Java memory leaks in minutes!  Just download the jar and point
 
     java -jar heapSpank-0.8.jar 8173
 
-Using data from [JAVA_HOME/bin/jmap -histo myPid](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr014.html#BABJIIHH), heapSpank shows the percentage of time that byte counts are on the rise for the 10 classes most likely to be leaking.
+Using data from [JAVA_HOME/bin/jmap -histo myPid](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr014.html#BABJIIHH), heapSpank shows the percentage of time that byte counts are on the rise for the 15 classes most likely to be leaking.
 
 Classes that reach "100%" are the most likely to be leaky.
 
