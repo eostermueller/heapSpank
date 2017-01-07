@@ -23,3 +23,24 @@ heapSpank detects Java memory leaks in minutes!  Just download the jar and point
 Using data from [JAVA_HOME/bin/jmap -histo myPid](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr014.html#BABJIIHH), heapSpank shows the percentage of time that byte counts are on the rise for the 10 classes most likely to be leaking.
 
 ![Quick Memory Leak Detection](http://g.recordit.co/IiBoJS6vkk.gif)
+
+## Notes
+* For best results, warm up an application for a few minutes at 'steady state' before launching heapSpank.
+* Small leaks, as well as large ones, are identified.
+* Do you run multi-hour tests to identify memory leak suspects?  No more!  heapSpank identifes leak suspects in just minutes.
+* MD5 (heapSpank-0.8.jar) = 837f251eea760c11496cf03b65e7f58a
+* Do you know someone who has expertise with the [IBM J9 JVM](http://www.ibm.com/developerworks/java/jdk/)?  Need help answering [this question on stackoverflow.com](http://stackoverflow.com/questions/41138610/programmatically-get-jmap-histo-data-from-ibm-j9) so heapSpank can support the J9.
+
+## Limitations
+1. Only works with HotSpot JVM, because data is furnished by HotSpot's jmap -histo <myPid>
+2. Curretly does not support jmap's connection to remote JVMs....but please create an issue if that feature would be helpful.
+
+## Forum
+* Send your questions/feedback to heapSpank@googlegroups.com for discussion.  
+* Forum history available [here](https://groups.google.com/forum/#!forum/heapspank).
+* To report a bug or ask for an enhancement [open an issue here](https://github.com/eostermueller/heapSpank/issues). 
+
+## Competition
+In case heapSpank is not quite what you were looking for, here are a few similar tools that do memory comparisons in search of memory leaks:
+* [This python script](http://alexpunnen.blogspot.com/2015/06/long-running-java-process-resource.html) compares two histogram (jmap -histo) dumps.
+* [Eclipse MAT](https://wiki.eclipse.org/MemoryAnalyzer) will compare two heap dumps as shown [here](https://www.ibm.com/developerworks/community/blogs/kevgrig/entry/how_to_use_the_memory_analyzer_tool_mat_to_compare_heapdumps_and_system_dumps20?lang=en).
