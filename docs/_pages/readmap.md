@@ -7,7 +7,7 @@ defaults:
     values:
       layout: single
       author_profile: false
-permalink: /configuration/
+permalink: /roadmap/
 title: "Roadmap"
 layout: about
 excerpt: "Priorities for enhancements."
