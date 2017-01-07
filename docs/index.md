@@ -5,7 +5,7 @@ date: 2017-01-06T11:48:41-04:00
 header:
   overlay_color: "#000"
   overlay_filter: "0.3"
-  overlay_image: /assets/images/rain1.JPG
+  overlay_image: /assets/images/wallpaper2.png
   cta_label: "Download"
   cta_url: "https://github.com/eostermueller/heapSpank/releases/download/v0.8/heapSpank-0.8.jar"
   caption: "Photo credit: [John Ostermueller](https://www.instagram.com/ostermuellerj/)"
