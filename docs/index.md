@@ -13,7 +13,7 @@ excerpt: "Find memory leaks in minutes."
 intro: 
   - excerpt: 'Nullam suscipit et nam, tellus velit pellentesque at malesuada, enim eaque. Quis nulla, netus tempor in diam gravida tincidunt, *proin faucibus* voluptate felis id sollicitudin. Centered with `type="center"`'
 ---
-<div markdown="1">
+
 **Forum**: [heapSpank@googlegroups.com](mailto:heapSpank@googlegroups.com)
 
 heapSpank detects Java memory leaks fast!  Just download the jar and point to the process id (pid) of a running JVM that you want to monitor for leaks.  It is easy! Like this:
@@ -23,4 +23,3 @@ heapSpank detects Java memory leaks fast!  Just download the jar and point to th
 Using data from [JAVA_HOME/bin/jmap -histo myPid](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr014.html#BABJIIHH), heapSpank shows the percentage of time that byte counts are on the rise for the 10 classes most likely to be leaking.
 
 ![Quick Memory Leak Detection](https://cloud.githubusercontent.com/assets/175773/21078075/63990eb2-bf27-11e6-8b5e-5de636302fa6.png)
-</div>
