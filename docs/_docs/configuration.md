@@ -1,18 +1,14 @@
 ---
-defaults:
-  # _pages
-  - scope:
-      path: ""
-      type: pages
-    values:
-      layout: single
-      author_profile: false
-permalink: /configuration/
-title: "Configuration"
-layout: about
-excerpt: "Use heapSpank.properties file to tweak settings."
-modified: 2017-01-03T11:55:22-04:00
+title: "Quick-Start Guide"
+permalink: /docs/configuration/
+excerpt: "How to use heapSpank.properties to configure heapSpank."
+modified: 2017-01-07T10:01:43-04:00
 ---
+
+Minimal Mistakes has been developed as a [Jekyll theme gem](http://jekyllrb.com/docs/themes/) for easier use. It is also 100% compatible with GitHub Pages --- just with a more involved installation process.
+
+{% include toc %}
+
 
 ## Configuration File
 To configure heapSpank, just create heapSpank.properties in the same folder as the heapSpank.jar file.
