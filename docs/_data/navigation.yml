@@ -1,7 +1,7 @@
 # main links
 main:
   - title: "Configuration"
-    url: /configuration/
+    url: https://github.com/eostermueller/heapSpank/wiki/Configuration
   - title: "Leak Examples"
     url: https://github.com/eostermueller/heapSpank
   - title: "Road Map"
