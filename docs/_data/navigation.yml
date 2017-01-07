@@ -6,5 +6,7 @@ main:
     url: https://github.com/eostermueller/heapSpank
   - title: "Road Map"
     url: https://github.com/eostermueller/heapSpank/wiki/Roadmap
+  - title: "Source Code"
+    url: https://github.com/eostermueller/heapSpank
   # - title: "Sitemap"
   #   url: /sitemap/
