@@ -5,6 +5,6 @@ main:
   - title: "Leak Examples"
     url: https://github.com/eostermueller/heapSpank
   - title: "Road Map"
-    url: https://github.com/eostermueller/heapSpank
+    url: /roadmap/
   # - title: "Sitemap"
   #   url: /sitemap/
