@@ -16,7 +16,7 @@ intro:
 
 **Forum**: [heapSpank@googlegroups.com](mailto:heapSpank@googlegroups.com)
 
-heapSpank detects Java memory leaks in minutes!  Just download the jar and point to the process id (pid) of a running JVM that you want to monitor for leaks.  It is easy! Like this:
+heapSpank detects Java memory leaks in minutes!  Just download the jar and point to the process id (pid) of a running JVM that you want to monitor for leaks.  No heapdump required -- it is easy! Like this:
 
     java -jar heapSpank-0.8.jar 8173
 
@@ -29,8 +29,8 @@ Classes that reach "100%" are the most likely to be leaky.
 ## Notes
 * For best results, warm up an application for a few minutes at 'steady state' before launching heapSpank.
 * Small leaks, as well as large ones, are identified.
-* Do you run multi-hour tests to identify memory leak suspects?  No more!  heapSpank identifes leak suspects in just minutes.
 * MD5 (heapSpank-0.8.jar) = 837f251eea760c11496cf03b65e7f58a
+* Apache 2.0 license.
 * Do you know someone who has expertise with the [IBM J9 JVM](http://www.ibm.com/developerworks/java/jdk/)?  Need help answering [this question on stackoverflow.com](http://stackoverflow.com/questions/41138610/programmatically-get-jmap-histo-data-from-ibm-j9) so heapSpank can support the J9.
 
 ## Limitations
