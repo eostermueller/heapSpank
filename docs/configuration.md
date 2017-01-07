@@ -1,3 +1,9 @@
+---
+permalink: /configuration/
+title: "Configuration"
+excerpt: "Use heapSpank.properties file to tweak settings."
+modified: 2017-01-03T11:55:22-04:00
+---
 
 ## Configuration File
 To configure heapSpank, just create heapSpank.properties in the same folder as the heapSpank.jar file.
