@@ -3,7 +3,7 @@ main:
   - title: "Configuration"
     url: https://github.com/eostermueller/heapSpank/wiki/Configuration
   - title: "Leak Examples"
-    url: https://github.com/eostermueller/heapSpank
+    url: https://github.com/eostermueller/heapSpank/wiki/Leak-Examples
   - title: "Road Map"
     url: https://github.com/eostermueller/heapSpank/wiki/Roadmap
   - title: "Source Code"
