@@ -47,5 +47,6 @@ In case heapSpank is not quite what you were looking for, here are a few similar
 
 * [This python script](http://alexpunnen.blogspot.com/2015/06/long-running-java-process-resource.html) compares two histogram (jmap -histo) runs.
 * Many blogs/tools use heapDumps to diagnose memory leaks.
+  * Open-source that auto-generates and auto-analyzes heap dumps, looking for leaks. [Github site](https://github.com/square/leakcanary) and [this blog](https://medium.com/square-corner-blog/leakcanary-detect-all-memory-leaks-875ff8360745#.docrwx62v).
   * [This blog](https://www.toptal.com/java/hunting-memory-leaks-in-java) recommends using JVisualVM to analyze a heapdump.
   * [Eclipse MAT](https://wiki.eclipse.org/MemoryAnalyzer) will compare two heap dumps as shown [here](https://www.ibm.com/developerworks/community/blogs/kevgrig/entry/how_to_use_the_memory_analyzer_tool_mat_to_compare_heapdumps_and_system_dumps20?lang=en).
