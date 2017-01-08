@@ -36,6 +36,7 @@ Classes that reach "100%" are the most likely to be leaky.
 ## Limitations
 1. Only works with HotSpot JVM, because data is furnished by HotSpot's jmap -histo <myPid>
 2. Curretly does not support jmap's connection to remote JVMs....but please create an issue if that feature would be helpful.
+3. Does not detect metaspace/permgen leaks.  For java 8+, use [these instructions](https://dzone.com/articles/how-use-verbose-options-java) to look turn on verbose class loading and look for classes loading long after your JVM is warmed up -- they are leaks.
 
 ## Forum
 * Send your questions/feedback to heapSpank@googlegroups.com for discussion.  
