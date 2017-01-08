@@ -46,6 +46,7 @@ Classes that reach "100%" are the most likely to be leaky.
 In case heapSpank is not quite what you were looking for, here are a few similar tools that do memory comparisons in search of memory leaks:
 
 * [This python script](http://alexpunnen.blogspot.com/2015/06/long-running-java-process-resource.html) compares two histogram (jmap -histo) runs.
+* [This code](https://github.com/CodingFabian/JavaCollectionAnalyzer) uses aspectj to track instance counts on ever-growing java.util collections.
 * Many blogs/tools use heapDumps to diagnose memory leaks.
   * Open-source that auto-generates and auto-analyzes heap dumps, looking for leaks. [Github site](https://github.com/square/leakcanary) and [this blog](https://medium.com/square-corner-blog/leakcanary-detect-all-memory-leaks-875ff8360745#.docrwx62v).
   * [This blog](https://www.toptal.com/java/hunting-memory-leaks-in-java) recommends using JVisualVM to analyze a heapdump.
