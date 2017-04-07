@@ -25,7 +25,7 @@ import com.github.eostermueller.heapspank.util.LimitedSizeQueue;
 
 public class LeakySpankConsole implements DisplayUpdateListener {
 
-	private static final String VERSION = "v0.8";
+	private static final String VERSION = "v0.09";
 	private static final String BANNER_FORMAT =     "  %4ds   heapSpank memory leak detector pid[%s] [%s]%n";
 	private static final String BANNER_FORMAT_ALT = "# %4ds   heapSpank memory leak detector pid[%s] [%s] ##%n";
 	private static final String INDENT = "\t";

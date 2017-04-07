@@ -207,7 +207,8 @@ public class VirtualMachineWrapper implements JMapHisto {
 		        final InputStream in = (InputStream)rc;
 		        histo = IOUtil.read(in);
 			}
-		} catch (IllegalAccessException | IllegalArgumentException | IOException | InvocationTargetException e ) {
+		//} catch (IllegalAccessException | IllegalArgumentException | IOException | InvocationTargetException e ) {
+		} catch (Exception e ) {
 			JMapHistoException jmhe = new JMapHistoException(e);
 			jmhe.setProcessId(this.getPid());
 			throw jmhe;
@@ -280,8 +281,7 @@ num     #instances         #bytes  class name
 	public void shutdown() {
 		try {
 			this.detach();
-		} catch (IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException | IOException e) {
+		} catch ( Exception e) {
 			e.printStackTrace();
 		}
 		
