@@ -7,7 +7,7 @@ header:
   overlay_filter: "0.3"
   overlay_image: /assets/images/wallpaper3.jpg
   cta_label: "Download"
-  cta_url: "https://github.com/eostermueller/heapSpank/releases/download/v0.8/heapSpank-0.8.jar"
+  cta_url: "https://github.com/eostermueller/heapSpank/releases/download/v0.09/heapSpank-0.09.jar"
   caption: "Photo credit: [John Ostermueller](https://www.instagram.com/ostermuellerj/)"
 excerpt: "Find memory leaks in minutes."
 intro: 
@@ -19,7 +19,7 @@ Follow us on **Twitter** @heapSpank for notifications of new releases.
 
 heapSpank detects Java memory leaks in minutes!  Just download the jar and point to the process id (pid) of a running JVM that you want to monitor for leaks.  ***No heapdump required** -- it's easy! Like this:
 
-    java -jar heapSpank-0.8.jar 8173
+    java -jar heapSpank-0.09.jar 8173
 
 Using data from [JAVA_HOME/bin/jmap -histo myPid](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr014.html#BABJIIHH), heapSpank shows the percentage of time that byte counts are on the rise for the 15 classes most likely to be leaking.
 
@@ -30,7 +30,7 @@ Classes that reach "100%" are the most likely to be leaky.
 ## Notes
 * For best results, warm up an application for a few minutes at 'steady state' before launching heapSpank.
 * Small leaks, as well as large ones, are identified.
-* MD5 (heapSpank-0.8.jar) = 837f251eea760c11496cf03b65e7f58a
+* MD5 (heapSpank-0.09.jar) = 54189f15017280ecf29116926e8593d2
 * Apache 2.0 license.
 * Do you know someone who has expertise with the [IBM J9 JVM](http://www.ibm.com/developerworks/java/jdk/)?  Need help answering [this question on stackoverflow.com](http://stackoverflow.com/questions/41138610/programmatically-get-jmap-histo-data-from-ibm-j9) so heapSpank can support the J9.
 
