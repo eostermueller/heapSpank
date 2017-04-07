@@ -1,10 +1,12 @@
 # main links
 main:
   - title: "Configuration"
-    url: /configuration/
+    url: https://github.com/eostermueller/heapSpank/wiki/Configuration
   - title: "Leak Examples"
-    url: https://github.com/eostermueller/heapSpank
+    url: https://github.com/eostermueller/heapSpank/wiki/Leak-Examples
   - title: "Road Map"
-    url: /roadmap/
+    url: https://github.com/eostermueller/heapSpank/wiki/Roadmap
+  - title: "Source Code"
+    url: https://github.com/eostermueller/heapSpank
   # - title: "Sitemap"
   #   url: /sitemap/
